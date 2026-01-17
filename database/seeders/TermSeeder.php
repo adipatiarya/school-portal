@@ -9,8 +9,36 @@ class TermSeeder extends Seeder
 {
     public function run(): void
     {
-        Term::create(['name' => 'Berita', 'slug' => 'berita']);
-        Term::create(['name' => 'Pengumuman', 'slug' => 'pengumuman']);
-        Term::create(['name' => 'Kegiatan', 'slug' => 'kegiatan']);
+        // Kategori
+        Term::create([
+            'name' => 'Berita',
+            'slug' => 'berita',
+            'type' => 'category',
+        ]);
+
+        Term::create([
+            'name' => 'Pengumuman',
+            'slug' => 'pengumuman',
+            'type' => 'category',
+        ]);
+
+        Term::create([
+            'name' => 'Kegiatan',
+            'slug' => 'kegiatan',
+            'type' => 'category',
+        ]);
+
+        // Tag
+        Term::create([
+            'name' => 'Favorit',
+            'slug' => 'favorit',
+            'type' => 'tag',
+        ]);
+
+        Term::create([
+            'name' => 'Urgent',
+            'slug' => 'urgent',
+            'type' => 'tag',
+        ]);
     }
 }

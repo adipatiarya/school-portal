@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             PostMetaSeeder::class,
             CommentSeeder::class,
             OptionSeeder::class,
+            TermRelationshipSeeder::class,
         ]);
 
     }
