@@ -17,6 +17,7 @@ class PostSeeder extends Seeder
             'content' => 'Ini adalah portal resmi sekolah untuk informasi akademik dan kegiatan.',
             'type' => 'post',
             'author_id' => $admin->id,
+            'status' => 'publish',
         ]);
 
         Post::create([
@@ -24,6 +25,8 @@ class PostSeeder extends Seeder
             'content' => 'Ujian semester akan dilaksanakan mulai tanggal 10 Juni.',
             'type' => 'post',
             'author_id' => $admin->id,
+            'status' => 'draft',
+
         ]);
     }
 }
