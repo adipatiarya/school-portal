@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Posts')
+@section('title', 'Pages')
 
 @section('content')
-  crud
+  Pages
 @endsection

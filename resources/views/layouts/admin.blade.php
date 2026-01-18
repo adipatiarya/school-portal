@@ -56,11 +56,27 @@
             <li>
                 <ul class="collapsible collapsible-accordion">
                     <li><a href="{{route('admin.dashboard')}}" class="collapsible-header waves-effect {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fa fa-tachometer"></i> Dashboard</a></li>
-                    <li><a class="collapsible-header waves-effect arrow-r  {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}"><i class="fa fa-file"></i> Posts<i class="fa fa-angle-down rotate-icon"></i></a>
+                    <li><a class="collapsible-header waves-effect arrow-r  {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}"><i class="fa fa-map"></i> Posts<i class="fa fa-angle-down rotate-icon"></i></a>
                         <div class="collapsible-body">
                             <ul>
                                 <li><a href="{{route('admin.posts.index')}}" class="waves-effect" style="{{ request()->routeIs('admin.posts.index') ? 'color:#4285F4' : '' }}">List</a></li>
                                 <li><a href="{{route('admin.posts.create')}}" class="waves-effect" style="{{ request()->routeIs('admin.posts.create') ? 'color:#4285F4' : '' }}">Add new</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a class="collapsible-header waves-effect arrow-r  {{ request()->routeIs('admin.pages.*') ? 'active' : '' }}"><i class="fa fa-photo"></i> Pages<i class="fa fa-angle-down rotate-icon"></i></a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="{{route('admin.pages.index')}}" class="waves-effect" style="{{ request()->routeIs('admin.pages.index') ? 'color:#4285F4' : '' }}">List</a></li>
+                                <li><a href="{{route('admin.pages.create')}}" class="waves-effect" style="{{ request()->routeIs('admin.pages.create') ? 'color:#4285F4' : '' }}">Add new</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a class="collapsible-header waves-effect arrow-r  {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><i class="fa fa-users"></i> Users<i class="fa fa-angle-down rotate-icon"></i></a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="{{route('admin.users.index')}}" class="waves-effect" style="{{ request()->routeIs('admin.users.index') ? 'color:#4285F4' : '' }}">List</a></li>
+                                <li><a href="{{route('admin.users.create')}}" class="waves-effect" style="{{ request()->routeIs('admin.users.create') ? 'color:#4285F4' : '' }}">Add new</a></li>
                             </ul>
                         </div>
                     </li>
