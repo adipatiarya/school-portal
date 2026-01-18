@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('terms', function (Blueprint $table) {
+        Schema::create('term_relationships', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->foreignId('taxonomy_id')->constrained('taxonomies')->onDelete('cascade');
+            $table->unsignedBigInteger('object_id'); // ID post/product/apa pun
             $table->timestamps();
+
+            $table->index(['taxonomy_id', 'object_id']);
         });
+
+
     }
 
     /**
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('terms');
+        Schema::dropIfExists('term_relationships');
     }
 };

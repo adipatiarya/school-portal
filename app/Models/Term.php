@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Term extends Model
-{
-    protected $fillable = ['name','slug'];
+class Term extends Model {
+    protected $fillable = ['name', 'slug'];
 
-    public function posts() {
-        return $this->belongsToMany(Post::class, 'term_relationships');
+    public function taxonomies() {
+        return $this->hasMany(Taxonomy::class);
     }
 }

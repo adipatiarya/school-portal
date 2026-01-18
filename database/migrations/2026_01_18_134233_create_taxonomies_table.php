@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('terms', function (Blueprint $table) {
+        Schema::create('taxonomies', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->foreignId('term_id')->constrained('terms')->onDelete('cascade');
+            $table->string('taxonomy'); // contoh: category, tag
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('terms');
+        Schema::dropIfExists('taxonomies');
     }
 };

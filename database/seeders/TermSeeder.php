@@ -4,41 +4,18 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Term;
+use App\Models\Taxonomy;
 
 class TermSeeder extends Seeder
 {
     public function run(): void
     {
-        // Kategori
-        Term::create([
-            'name' => 'Berita',
-            'slug' => 'berita',
-            'type' => 'category',
-        ]);
+        Term::create(['name' => 'Technology', 'slug' => 'technology']);
+        Term::create(['name' => 'Education', 'slug' => 'education']);
 
-        Term::create([
-            'name' => 'Pengumuman',
-            'slug' => 'pengumuman',
-            'type' => 'category',
-        ]);
+        Taxonomy::create(['term_id' => 1, 'taxonomy' => 'category', 'description' => 'Tech related']);
+        Taxonomy::create(['term_id' => 2, 'taxonomy' => 'category', 'description' => 'Education related']);
 
-        Term::create([
-            'name' => 'Kegiatan',
-            'slug' => 'kegiatan',
-            'type' => 'category',
-        ]);
 
-        // Tag
-        Term::create([
-            'name' => 'Favorit',
-            'slug' => 'favorit',
-            'type' => 'tag',
-        ]);
-
-        Term::create([
-            'name' => 'Urgent',
-            'slug' => 'urgent',
-            'type' => 'tag',
-        ]);
     }
 }
