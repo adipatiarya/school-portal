@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./resources/app/*"]
+        },
+
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "useDefineForClassFields": true,
+
+        "jsx": "preserve",
+
+        "noImplicitThis": true,
+        "strict": false,
+        "verbatimModuleSyntax": true,
+
+        "isolatedModules": true,
+
+        "target": "ESNext",
+
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+
+        "skipLibCheck": true
+    }
+}
