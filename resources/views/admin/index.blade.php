@@ -1,6 +1,7 @@
 @php
     $config = [
-        'base_url' => config('app.admin_dir')
+        'base_url' => config('app.admin_dir'),
+        'app_url' => config('app.url')
     ];
 @endphp
 
