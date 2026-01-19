@@ -21,8 +21,22 @@ class Post extends Model
     }
 
     public function terms() {
-        return $this->belongsToMany(Term::class, 'term_relationships');
+        return $this->belongsToMany(Term::class, 'term_relationships', 'object_id', 'taxonomy_id');
+
     }
+    public function categories()
+    {
+        return $this->belongsToMany(Taxonomy::class, 'term_relationships', 'object_id', 'taxonomy_id')
+                    ->where('taxonomy', 'category');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Taxonomy::class, 'term_relationships', 'object_id', 'taxonomy_id')
+                    ->where('taxonomy', 'tag');
+    }
+
+
 
     public function scopePublished($query)
     {

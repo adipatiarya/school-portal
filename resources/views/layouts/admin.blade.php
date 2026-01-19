@@ -12,18 +12,6 @@
     <link rel="stylesheet" href="{{asset('admin/assets/css/bootstrap.min.css')}}">
     <!-- Material Design Bootstrap -->
     <link rel="stylesheet" href="{{asset('admin/assets/css/mdb.min.css')}}">
-    
-    <style>
-       .collapsible li .collapsible-header.active {
-         /* background-color: rgba(0,0,0, .05) !important; */
-       }
-       .collapsible li .collapsible-body {
-            /* background-color: #f8f9fa !important; */
-
-       }
-    </style>
-
-
     @yield('custom-css')
 </head>
 
@@ -96,7 +84,7 @@
             </div>
             <!-- Breadcrumb-->
             <div class="breadcrumb-dn mr-auto">
-                <p>Material Design for Bootstrap</p>
+                <p>@yield('title')</p>
             </div>
 
             <!--Navbar links-->
@@ -152,12 +140,8 @@
     <!--Main Navigation-->
 
     <!--Main layout-->
-    <main>
-        <div class="container-fluid">
-
-            @yield('content')
-
-        </div>
+    <main style="min-height:87vh">
+      @yield('content')
     </main>
     <!--Main layout-->
 
