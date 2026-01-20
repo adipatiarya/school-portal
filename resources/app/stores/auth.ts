@@ -25,7 +25,7 @@ export const useAuthStore = defineStore("auth", {
     },
     async login(email: string, password: string) {
       await api.post("/login", { email, password });
-      await this.fetchUser();
+      location.reload();
     },
     async waitUntilReady() {
       while (this.isLoading) {
@@ -44,6 +44,7 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       await api.post("/logout");
       this.user = null;
+      location.reload();
     },
   },
 });

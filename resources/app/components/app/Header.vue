@@ -4,7 +4,8 @@ import { useAppOptionStore } from "@/stores/app-option";
 import { RouterLink } from "vue-router";
 import { slideToggle } from "@/composables/slideToggle.js";
 import AppHeaderMegaMenu from "@/components/app/HeaderMegaMenu.vue";
-
+import { useAuthStore } from "@/stores/auth";
+const auth = useAuthStore();
 const appOption = useAppOptionStore();
 const notificationData = [];
 
@@ -18,12 +19,6 @@ function toggleAppSidebarEndToggled() {
 
 function toggleAppSidebarEndMobileToggled() {
   appOption.appSidebarEndMobileToggled = !appOption.appSidebarEndMobileToggled;
-}
-
-function toggleAppHeaderSearch(event) {
-  event.preventDefault();
-
-  appOption.appHeaderSearchToggled = !appOption.appHeaderSearchToggled;
 }
 
 function toggleAppTopMenuMobileToggled(event) {
@@ -252,8 +247,16 @@ onMounted(() => {
             >Settings</router-link
           >
           <div class="dropdown-divider"></div>
-          <router-link to="/user/login-v1" class="dropdown-item"
-            >Log Out</router-link
+          <a
+            href="#"
+            class="dropdown-item"
+            @click="
+              async (e) => {
+                e.preventDefault();
+                await auth.logout();
+              }
+            "
+            >Log Out</a
           >
         </div>
       </div>
