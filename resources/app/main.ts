@@ -11,6 +11,13 @@ import "@fortawesome/fontawesome-free/scss/solid.scss";
 import "@fortawesome/fontawesome-free/scss/brands.scss";
 import "@fortawesome/fontawesome-free/scss/v4-shims.scss";
 
+import Panel from "@/components/bootstrap/Panel.vue";
+import PanelBody from "@/components/bootstrap/PanelBody.vue";
+import PanelHeader from "@/components/bootstrap/PanelHeader.vue";
+import PanelTitle from "@/components/bootstrap/PanelTitle.vue";
+import PanelFooter from "@/components/bootstrap/PanelFooter.vue";
+import PanelToolbar from "@/components/bootstrap/PanelToolbar.vue";
+
 import "bootstrap";
 import "./scss/vue.scss";
 
@@ -20,12 +27,17 @@ import { useAuthStore } from "./stores/auth";
 const emitter = mitt();
 
 const app = createApp(App);
+app.component("Panel", Panel);
+app.component("PanelBody", PanelBody);
+app.component("PanelHeader", PanelHeader);
+app.component("PanelFooter", PanelFooter);
+app.component("PanelToolbar", PanelToolbar);
+app.component("PanelTitle", PanelTitle);
 app.use(router);
 app.use(createPinia());
-
 
 useAuthStore().fetchUser();
 
 app.config.globalProperties.emitter = emitter;
-app.use(PerfectScrollbarPlugin)
+app.use(PerfectScrollbarPlugin);
 app.mount("#app");
