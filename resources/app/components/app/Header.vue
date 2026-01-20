@@ -124,72 +124,7 @@ onMounted(() => {
 
     <!-- BEGIN header-nav -->
     <div class="navbar-nav">
-      <div class="navbar-item navbar-form">
-        <form action="" method="POST" name="search" v-on:submit="checkForm">
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Enter keyword"
-            />
-            <button type="submit" class="btn btn-search">
-              <i class="fa fa-search"></i>
-            </button>
-          </div>
-        </form>
-      </div>
       <div class="navbar-item dropdown">
-        <a
-          href="javascript:;"
-          data-bs-toggle="dropdown"
-          class="navbar-link dropdown-toggle icon"
-        >
-          <i class="fa fa-bell"></i>
-          <span class="badge">{{ notificationData.length }}</span>
-        </a>
-        <div class="dropdown-menu media-list dropdown-menu-end">
-          <div class="dropdown-header">
-            NOTIFICATIONS ({{ notificationData.length }})
-          </div>
-          <template v-if="notificationData && notificationData.length > 0">
-            <a
-              href="javascript:;"
-              class="dropdown-item media"
-              v-for="(notification, index) in notificationData"
-              v-bind:key="index"
-            >
-              <div class="media-left">
-                <i
-                  v-if="notification.icon"
-                  v-bind:class="notification.icon"
-                ></i>
-                <i
-                  v-if="notification.iconMedia"
-                  v-bind:class="notification.iconMedia"
-                ></i>
-                <img
-                  v-if="notification.img"
-                  v-bind:src="notification.img"
-                  class="media-object"
-                  alt=""
-                />
-              </div>
-              <div class="media-body">
-                <h6 class="media-heading" v-html="notification.title"></h6>
-                <p v-if="notification.desc" v-html="notification.desc"></p>
-                <div class="text-muted fs-10px">{{ notification.time }}</div>
-              </div>
-            </a>
-          </template>
-          <template v-else>
-            <div class="text-center w-300px py-3">No notification found</div>
-          </template>
-          <div class="dropdown-footer text-center">
-            <a href="javascript:;" class="text-decoration-none">View more</a>
-          </div>
-        </div>
-      </div>
-      <div class="navbar-item dropdown" v-if="appOption.appHeaderLanguageBar">
         <a
           href="#"
           class="navbar-link dropdown-toggle"
@@ -203,17 +138,7 @@ onMounted(() => {
             ><span class="fi fi-us me-2" title="us"></span> English</a
           >
           <a href="javascript:;" class="dropdown-item"
-            ><span class="fi fi-cn me-2" title="cn"></span> Chinese</a
-          >
-          <a href="javascript:;" class="dropdown-item"
-            ><span class="fi fi-jp me-2" title="jp"></span> Japanese</a
-          >
-          <a href="javascript:;" class="dropdown-item"
-            ><span class="fi fi-be me-2" title="be"></span> Belgium</a
-          >
-          <div class="dropdown-divider"></div>
-          <a href="javascript:;" class="dropdown-item text-center"
-            >more options</a
+            ><span class="fi fi-cn me-2" title="id"></span> Indonesian</a
           >
         </div>
       </div>
@@ -225,7 +150,7 @@ onMounted(() => {
         >
           <img src="https://placehold.co/600x400/orange/white" alt="" />
           <span>
-            <span class="d-none d-md-inline">Adam Schwartz</span>
+            <span class="d-none d-md-inline">{{ auth?.user.name }}</span>
             <b class="caret"></b>
           </span>
         </a>

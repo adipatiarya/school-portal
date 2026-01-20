@@ -5,13 +5,14 @@ import { onMounted } from "vue";
 import { slideToggle } from "@/composables/slideToggle.js";
 import { slideUp } from "@/composables/slideUp.js";
 import SidebarNav from "@/components/app/SidebarNav.vue";
-import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
 
 const appOption = useAppOptionStore();
 var appSidebarFloatSubmenuTimeout: any = "";
 var appSidebarFloatSubmenuDom: any = "";
 
-const { menus } = storeToRefs(useAppSidebarMenuStore());
+const { menus } = useAppSidebarMenuStore();
+const auth = useAuthStore();
 
 declare const document: Document | any;
 
@@ -547,21 +548,15 @@ onMounted(() => {
             </div>
             <div class="menu-profile-info">
               <div class="d-flex align-items-center">
-                <div class="flex-grow-1 d-flex align-items-center">Budi</div>
+                <div class="flex-grow-1 d-flex align-items-center">
+                  {{ auth?.user.name }}
+                </div>
               </div>
               <small>Admin</small>
             </div>
           </a>
         </div>
 
-        <div class="menu-search mb-n3" v-if="appOption.appSidebarSearch">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Sidebar menu filter..."
-            v-on:keyup="handleSearchFunction($event)"
-          />
-        </div>
         <template v-for="menu in menus">
           <div class="menu-header" v-if="menu.is_header">{{ menu.text }}</div>
           <div class="menu-divider" v-else-if="menu.is_divider"></div>
