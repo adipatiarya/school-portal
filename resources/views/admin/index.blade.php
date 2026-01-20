@@ -3,7 +3,7 @@
         'base_url' => config('app.admin_dir'),
         'app_url' => config('app.url'),
         'app_name' => config('app.name'),
-        'logo' => asset('assets/img/logo/logo-admin.png')
+        'logo' => asset('assets/img/logo/logo.png')
     ];
 @endphp
 
