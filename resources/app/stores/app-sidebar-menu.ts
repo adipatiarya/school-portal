@@ -10,7 +10,7 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
         {
           url: "/dashboard",
           img: "",
-          icon: "fa fa-grip",
+          icon: "bi bi-grid-fill",
           title: "Dashboard",
           show: true,
         },

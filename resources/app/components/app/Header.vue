@@ -74,11 +74,9 @@ onMounted(() => {
         <span class="icon-bar"></span>
       </button>
       <RouterLink to="/" class="navbar-brand">
-        <i class="fa fa-graduation-cap fa-2x" style="color: #424c0a"></i>
+        <i class="bi bi-pie-chart-fill h2 my-2" style="color: #794430"></i>
 
-        <span
-          ><b>{{ buildTitle().name }}</b> {{ buildTitle().info }}</span
-        >
+        <span class="mx-1"><b>SCHOOL</b> Manegement</span>
       </RouterLink>
       <button
         type="button"
