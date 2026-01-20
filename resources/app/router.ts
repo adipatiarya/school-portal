@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "./stores/auth";
-
+import { useAppSidebarMenuStore } from "./stores/app-sidebar-menu";
 const router = createRouter({
   history: createWebHistory(window.config.base_url || "/"), // 👈 set base path here
   routes: [
@@ -31,8 +31,8 @@ router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore();
 
   // Jika belum ada user di store, coba fetch dari backend
-  if (!auth.user) {
-    await auth.fetchUser();
+  if (auth.isLoading) {
+    await auth.waitUntilReady();
   }
 
   if (to.meta.requiresAuth && !auth.user) {

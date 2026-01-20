@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { useAppOptionStore } from "./stores/app-option";
 import AppSidebar from "@/components/app/Sidebar.vue";
-import AppSidebarRight from "@/components/app/SidebarRight.vue";
 import AppHeader from "@/components/app/Header.vue";
-import AppTopMenu from "@/components/app/TopMenu.vue";
 import AppFooter from "@/components/app/Footer.vue";
 import AppThemePanel from "@/components/app/ThemePanel.vue";
+import { useAuthStore } from "./stores/auth";
 
 const appOption = useAppOptionStore();
+const authStore = useAuthStore();
 </script>
 
 <template>
   <div
+    v-if="!authStore.isLoading"
     class="app"
     v-bind:class="{
       'app-header-menu-search-toggled': appOption.appHeaderSearchToggled,
@@ -42,12 +43,13 @@ const appOption = useAppOptionStore();
     <vue3-progress-bar />
     <app-header v-if="!appOption.appHeaderHide" />
     <app-sidebar v-if="!appOption.appSidebarHide" />
-    <app-sidebar-right v-if="appOption.appSidebarTwo" />
-    <app-top-menu v-if="appOption.appTopMenu" />
     <div class="app-content" v-bind:class="appOption.appContentClass">
       <router-view></router-view>
     </div>
     <app-footer v-if="appOption.appFooter" />
     <app-theme-panel />
+  </div>
+  <div v-else class="app-loader">
+    <span class="spinner"></span>
   </div>
 </template>

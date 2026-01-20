@@ -7,7 +7,6 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
     setSidebarMenu(perimissions: Array<string>) {
       const perms = [
         { text: "Navigation", is_header: true },
-
         {
           url: "/dashboard",
           img: "",
@@ -15,9 +14,25 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
           show: true,
         },
         {
-          url: "/posts",
           img: "",
-          title: "Post list",
+          title: "Posts",
+          children: [
+            {
+              url: "/posts",
+              title: "List",
+              show: true,
+            },
+            {
+              url: "/posts/create",
+              title: "Add new",
+              show: true,
+            },
+          ],
+        },
+        {
+          url: "/user",
+          img: "",
+          title: "Media",
           show: true,
         },
         {
@@ -27,25 +42,39 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
           show: true,
         },
         {
+          url: "/pages",
+          img: "",
+          title: "Comments",
+          show: true,
+        },
+        { text: "", is_divider: true },
+        {
           url: "/user",
           img: "",
-          title: "User Management",
+          title: "Users",
           show: true,
         },
         {
           url: "/role",
           img: "",
-          title: "Role Management",
+          title: "Roles",
           show: true,
         },
+        { text: "", is_divider: true },
         {
           img: "",
-          title: "Settings",
+          title: "Preferences",
+          show: true,
 
           children: [
             {
               url: "/setting",
-              title: "Scoring Configuration",
+              title: "About",
+              show: true,
+            },
+            {
+              url: "/setting",
+              title: "Documentation",
               show: true,
             },
           ],
