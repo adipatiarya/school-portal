@@ -311,10 +311,10 @@
 				
 				& .menu-item {
 					& .menu-link {
-						padding: rem(3px) rem(20px) rem(3px) rem(15px);
+						padding: rem(0px) rem(20px) rem(12px) rem(18px);//0px 20px 12px 18px
 						text-decoration: none;
 						position: relative;
-						line-height: rem(18px);
+						line-height: $app-sidebar-menu-link-line-height;
 						color: var(--#{$prefix}app-sidebar-menu-submenu-link-color);
 						font-weight: var(--#{$prefix}app-sidebar-menu-submenu-link-font-weight);
 						
