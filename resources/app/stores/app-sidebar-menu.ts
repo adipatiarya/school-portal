@@ -7,6 +7,7 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
   actions: {
     setSidebarMenu(perimissions: Array<string>) {
       const perms = [
+        { text: "", is_header: true },
         {
           url: "/dashboard",
           img: "",
