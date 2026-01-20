@@ -76,7 +76,7 @@ onMounted(() => {
       <RouterLink to="/" class="navbar-brand">
         <i class="bi bi-pie-chart-fill h2 my-2" style="color: #794430"></i>
 
-        <span class="mx-1"><b>SCHOOL</b> Manegement</span>
+        <span class="mx-1"><b>Nanana</b> School </span>
       </RouterLink>
       <button
         type="button"
