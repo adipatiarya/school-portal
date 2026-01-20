@@ -24,10 +24,6 @@ function toggleAppSidebarMinified(e) {
   e.preventDefault();
 
   appOption.appSidebarMinified = !appOption.appSidebarMinified;
-
-  if (localStorage) {
-    localStorage.appSidebarMinified = appOption.appSidebarMinified;
-  }
 }
 
 function appSidebarProfileToggle(e) {
@@ -315,134 +311,6 @@ function handleSidebarMinifyFloatMenu() {
   }
 }
 
-function handleSearchFunction(event) {
-  var targetValue = event.target.value;
-  targetValue = targetValue.toLowerCase();
-
-  if (targetValue) {
-    var elms = [].slice.call(
-      document.querySelectorAll(
-        ".app-sidebar:not(.app-sidebar-end) .menu > .menu-item:not(.menu-profile):not(.menu-header):not(.menu-search), .app-sidebar:not(.app-sidebar-end) .menu-submenu > .menu-item"
-      )
-    );
-    if (elms) {
-      elms.map(function (elm: any) {
-        elm.classList.add("d-none");
-      });
-    }
-    var elms = [].slice.call(
-      document.querySelectorAll(".app-sidebar:not(.app-sidebar-end) .has-text")
-    );
-    if (elms) {
-      elms.map(function (elm: any) {
-        elm.classList.remove("has-text");
-      });
-    }
-    var elms = [].slice.call(
-      document.querySelectorAll(".app-sidebar:not(.app-sidebar-end) .expand")
-    );
-    if (elms) {
-      elms.map(function (elm: any) {
-        elm.classList.remove("expand");
-      });
-    }
-    var elms = [].slice.call(
-      document.querySelectorAll(
-        ".app-sidebar:not(.app-sidebar-end) .menu > .menu-item:not(.menu-profile):not(.menu-header):not(.menu-search) > .menu-link, .app-sidebar .menu-submenu > .menu-item > .menu-link"
-      )
-    );
-    if (elms) {
-      elms.map(function (elm: any) {
-        var targetText = elm.textContent;
-        targetText = targetText.toLowerCase();
-        if (targetText.search(targetValue) > -1) {
-          var targetElm = elm.closest(".menu-item");
-          if (targetElm) {
-            targetElm.classList.remove("d-none");
-            targetElm.classList.add("has-text");
-          }
-
-          var targetElm = elm.closest(".menu-item.has-sub");
-          if (targetElm) {
-            var targetElm = targetElm.querySelector(
-              ".menu-submenu .menu-item.d-none"
-            );
-            if (targetElm) {
-              targetElm.classList.remove("d-none");
-            }
-          }
-
-          var targetElm = elm.closest(".menu-submenu");
-          if (targetElm) {
-            targetElm.style.display = "block";
-
-            var targetElm = targetElm.querySelector(
-              ".menu-item:not(.has-text)"
-            );
-            if (targetElm) {
-              targetElm.classList.add("d-none");
-            }
-
-            var targetElm = elm.closest(".has-sub:not(.has-text)");
-            if (targetElm) {
-              targetElm.classList.remove("d-none");
-              targetElm.classList.add("expand");
-
-              var targetElm = targetElm.closest(".has-sub:not(.has-text)");
-              if (targetElm) {
-                targetElm.classList.remove("d-none");
-                targetElm.classList.add("expand");
-              }
-            }
-          }
-        }
-      });
-    }
-  } else {
-    var elms = [].slice.call(
-      document.querySelectorAll(
-        ".app-sidebar:not(.app-sidebar-end) .menu > .menu-item:not(.menu-profile):not(.menu-header):not(.menu-search).has-sub .menu-submenu"
-      )
-    );
-    if (elms) {
-      elms.map(function (elm: any) {
-        elm.removeAttribute("style");
-      });
-    }
-
-    var elms = [].slice.call(
-      document.querySelectorAll(
-        ".app-sidebar:not(.app-sidebar-end) .menu > .menu-item:not(.menu-profile):not(.menu-header):not(.menu-search)"
-      )
-    );
-    if (elms) {
-      elms.map(function (elm: any) {
-        elm.classList.remove("d-none");
-      });
-    }
-
-    var elms = [].slice.call(
-      document.querySelectorAll(
-        ".app-sidebar:not(.app-sidebar-end) .menu-submenu > .menu-item"
-      )
-    );
-    if (elms) {
-      elms.map(function (elm: any) {
-        elm.classList.remove("d-none");
-      });
-    }
-
-    var elms = [].slice.call(
-      document.querySelectorAll(".app-sidebar:not(.app-sidebar-end) .expand")
-    );
-    if (elms) {
-      elms.map(function (elm: any) {
-        elm.classList.remove("expand");
-      });
-    }
-  }
-}
-
 onMounted(() => {
   var handleSidebarMenuToggle = function (menus, expandTime) {
     menus.map(function (menu) {
@@ -513,12 +381,6 @@ onMounted(() => {
   handleSidebarMenuToggle(submenusLvl2, expandTime);
 
   handleSidebarMinifyFloatMenu();
-
-  if (localStorage) {
-    if (typeof localStorage.appSidebarMinified !== "undefined") {
-      appOption.appSidebarMinified = localStorage.appSidebarMinified;
-    }
-  }
 });
 </script>
 <template>
@@ -566,7 +428,7 @@ onMounted(() => {
         </template>
 
         <!-- BEGIN minify-button -->
-        <div class="menu-item d-none">
+        <div class="menu-item d-flex">
           <a
             href="javascript:;"
             class="app-sidebar-minify-btn ms-auto d-flex align-items-center text-decoration-none"

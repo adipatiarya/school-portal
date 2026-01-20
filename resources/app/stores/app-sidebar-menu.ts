@@ -17,7 +17,7 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
         { text: "Web Portal", is_header: true },
         {
           title: "Artikel dan Berita",
-          icon: "fa fa-crop-simple",
+          icon: "fa fa-newspaper-o",
           children: [
             {
               url: "/posts",
