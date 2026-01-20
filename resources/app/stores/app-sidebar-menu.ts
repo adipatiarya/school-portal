@@ -1,4 +1,3 @@
-import { icon } from "@fortawesome/fontawesome-svg-core";
 import { defineStore } from "pinia";
 
 export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {

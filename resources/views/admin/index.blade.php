@@ -1,7 +1,9 @@
 @php
     $config = [
         'base_url' => config('app.admin_dir'),
-        'app_url' => config('app.url')
+        'app_url' => config('app.url'),
+        'app_name' => config('app.name'),
+        'logo' => asset('assets/img/logo/logo-admin.png')
     ];
 @endphp
 
@@ -12,7 +14,7 @@
         <link rel="icon" href="/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>Dashboard - {{ config('app.name') }}</title>
         <script>
             window.config = @json($config);
         </script>

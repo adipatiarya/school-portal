@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useAppOptionStore } from "@/stores/app-option";
 import { RouterLink } from "vue-router";
 import { slideToggle } from "@/composables/slideToggle.js";
@@ -7,7 +7,8 @@ import AppHeaderMegaMenu from "@/components/app/HeaderMegaMenu.vue";
 import { useAuthStore } from "@/stores/auth";
 const auth = useAuthStore();
 const appOption = useAppOptionStore();
-const notificationData = [];
+const appName = ref("");
+const logo = ref("");
 
 function toggleAppSidebarMobileToggled() {
   appOption.appSidebarMobileToggled = !appOption.appSidebarMobileToggled;
@@ -35,13 +36,22 @@ function handleWindowResize() {
   });
 }
 
-function checkForm(event) {
-  event.preventDefault();
-  //this.$router.push({ path: '/extra/search' })
-}
+const buildTitle = () => {
+  const text = window.config.app_name.split(" ");
+  if (text.length > 0) {
+    const name = text[0];
+    const info = text.slice(1).join(" ");
+
+    return { name, info };
+  }
+
+  return { name: text[0], info: "" };
+};
 
 onMounted(() => {
   handleWindowResize();
+  appName.value = window.config.app_name;
+  logo.value = window.config.logo;
 });
 </script>
 
@@ -64,7 +74,10 @@ onMounted(() => {
         <span class="icon-bar"></span>
       </button>
       <RouterLink to="/" class="navbar-brand">
-        <span class="navbar-logo"></span> <b>Color</b> Admin
+        <i class="fa fa-graduation-cap fa-2x" style="color: #424c0a"></i>
+        <span
+          ><b>{{ buildTitle().name }}</b> {{ buildTitle().info }}</span
+        >
       </RouterLink>
       <button
         type="button"
@@ -202,3 +215,10 @@ onMounted(() => {
     <!-- END header-nav -->
   </div>
 </template>
+<style scoped>
+:deep(.logo) {
+  width: 200px;
+  height: 30px;
+  object-fit: cover;
+}
+</style>
