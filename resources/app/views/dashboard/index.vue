@@ -5,7 +5,7 @@ import AppThemePanel from "@/components/app/ThemePanel.vue";
 
 <template>
   <AppLayout>
-    <div>YES</div>
+    <div>yes <i class="bi bi-archive"></i></div>
     <template #app-theme-panel>
       <AppThemePanel></AppThemePanel>
     </template>

@@ -1,0 +1,73 @@
+Baik, Suratman 🙌. Untuk sebuah halaman dashboard sekolah modern, menu navigasi harus jelas, modular, dan sesuai dengan peran pengguna (admin, guru, siswa, orang tua). Berikut contoh struktur menu yang bisa kamu jadikan acuan:
+
+📋 Contoh Menu Dashboard
+1. Menu Utama (Admin)
+• 	🏠 Beranda → Ringkasan KPI, statistik kehadiran, pengumuman terbaru
+• 	👩‍🏫 Akademik
+• 	Jadwal Kelas
+• 	Data Mata Pelajaran
+• 	Nilai & Rapor
+• 	📚 LMS
+• 	Materi & Tugas
+• 	Bank Soal
+• 	Forum Diskusi
+• 	🧑‍🎓 Siswa
+• 	Data Siswa
+• 	Absensi
+• 	Prestasi & Catatan
+• 	👨‍🏫 Guru
+• 	Data Guru
+• 	Beban Mengajar
+• 	Jadwal Mengajar
+• 	💳 Administrasi
+• 	Pendaftaran
+• 	Pembayaran
+• 	Inventaris
+• 	📖 Perpustakaan
+• 	Katalog Buku
+• 	Peminjaman
+• 	Denda
+• 	📢 Komunikasi
+• 	Pengumuman
+• 	Pesan Orang Tua–Guru
+• 	📊 Analitik
+• 	Kehadiran
+• 	Nilai
+• 	Keuangan
+• 	⚙️ Pengaturan
+• 	Role & Hak Akses
+• 	Profil Sekolah
+• 	Backup & Audit Log
+
+2. Menu Guru
+• 	Beranda (jadwal & pengumuman)
+• 	Kelas Saya
+• 	Input Nilai
+• 	Absensi Kelas
+• 	Materi & Tugas
+• 	Komunikasi dengan Orang Tua
+• 	Profil & Pengaturan
+
+3. Menu Siswa
+• 	Beranda (jadwal hari ini, pengumuman)
+• 	Jadwal Kelas
+• 	Materi & Tugas
+• 	Nilai & Rapor
+• 	Absensi
+• 	Perpustakaan
+• 	Profil & Pengaturan
+
+4. Menu Orang Tua
+• 	Beranda (ringkasan anak)
+• 	Kehadiran Anak
+• 	Nilai & Rapor
+• 	Tagihan & Pembayaran
+• 	Komunikasi dengan Guru
+• 	Pengumuman Sekolah
+
+🧩 Tips Implementasi di Vue
+Gunakan Vue Router + Pinia dengan struktur menu berbasis role:
+
+Lalu buat sidebar menu yang otomatis filter berdasarkan .
+
+Kalau kamu mau, aku bisa bikin mockup visual sidebar dashboard dengan ikon + label, biar lebih kebayang layout-nya. Mau aku tunjukkan versi admin dashboard sidebar dalam bentuk desain visual?

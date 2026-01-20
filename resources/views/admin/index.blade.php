@@ -22,7 +22,7 @@
             @vite(['resources/app/main.ts'])
         @endif
     </head>
-    <body>
+    <body class="theme-gray-600">
        <div id="app"></div>
     </body>
 </html>
