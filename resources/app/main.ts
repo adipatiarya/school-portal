@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import router from "./router";
 import { PerfectScrollbarPlugin } from "vue3-perfect-scrollbar";
+import i18n from "./i18n";
 import "vue3-perfect-scrollbar/style.css";
 
 import mitt from "mitt";
@@ -40,4 +41,6 @@ useAuthStore().fetchUser();
 
 app.config.globalProperties.emitter = emitter;
 app.use(PerfectScrollbarPlugin);
+app.use(i18n);
+
 app.mount("#app");

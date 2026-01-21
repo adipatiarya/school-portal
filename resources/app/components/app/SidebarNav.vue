@@ -2,6 +2,8 @@
 import SidebarNav from "@/components/app/SidebarNav.vue";
 import { computed } from "vue";
 import { useRouter, RouterLink } from "vue-router";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
 const props = defineProps<{
   menu: {
@@ -53,7 +55,7 @@ function subIsActive(urls) {
         <img v-bind:src="menu.img" alt="" />
       </span>
       <span class="menu-text">
-        {{ menu.title }}
+        {{ t(menu.title) }}
         <span class="menu-label" v-if="menu.label">{{ menu.label }}</span>
       </span>
       <span class="menu-caret" v-if="menu.children"></span>
@@ -81,7 +83,7 @@ function subIsActive(urls) {
           <img v-bind:src="menu.img" alt="" />
         </span>
         <span class="menu-text">
-          {{ menu.title }}
+          {{ t(menu.title) }}
           <span class="menu-label" v-if="menu.label">{{ menu.label }}</span>
         </span>
       </a>

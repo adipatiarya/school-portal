@@ -5,10 +5,31 @@ import { RouterLink } from "vue-router";
 import { slideToggle } from "@/composables/slideToggle.js";
 import AppHeaderMegaMenu from "@/components/app/HeaderMegaMenu.vue";
 import { useAuthStore } from "@/stores/auth";
+
+import { useI18n } from "vue-i18n";
+import { watchEffect } from "vue";
+
 const auth = useAuthStore();
+
 const appOption = useAppOptionStore();
+
 const appName = ref("");
+
 const logo = ref("");
+
+const { locale } = useI18n();
+
+const setLanguage = (newLang) => {
+  locale.value = newLang;
+  localStorage.setItem("lang", newLang);
+};
+
+watchEffect(() => {
+  const storedLang = localStorage.getItem("lang");
+  if (storedLang) {
+    locale.value = storedLang;
+  }
+});
 
 function toggleAppSidebarMobileToggled() {
   appOption.appSidebarMobileToggled = !appOption.appSidebarMobileToggled;
@@ -36,22 +57,27 @@ function handleWindowResize() {
   });
 }
 
-const buildTitle = () => {
-  const text = window.config.app_name.split(" ");
-  if (text.length > 0) {
-    const name = text[0];
-    const info = text.slice(1).join(" ");
+// const buildTitle = () => {
+//   const text = window.config.app_name.split(" ");
+//   if (text.length > 0) {
+//     const name = text[0];
+//     const info = text.slice(1).join(" ");
 
-    return { name, info };
-  }
+//     return { name, info };
+//   }
 
-  return { name: text[0], info: "" };
-};
+//   return { name: text[0], info: "" };
+// };
 
 onMounted(() => {
   handleWindowResize();
   appName.value = window.config.app_name;
   logo.value = window.config.logo;
+  if (localStorage) {
+    if (typeof localStorage.lang !== "undefined") {
+      locale.value = localStorage.lang;
+    }
+  }
 });
 </script>
 
@@ -142,14 +168,35 @@ onMounted(() => {
           class="navbar-link dropdown-toggle"
           data-bs-toggle="dropdown"
         >
-          <span class="fi fi-id" title="us"></span>
-          <span class="d-none d-sm-inline ms-1">ID</span> <b class="caret"></b>
+          <span
+            class="fi"
+            :title="locale.toLowerCase()"
+            :class="`fi-${locale.toLowerCase() == 'en' ? 'us' : locale.toLowerCase()}`"
+          ></span>
+          <span class="d-none d-sm-inline ms-1">{{ locale }}</span>
+          <b class="caret"></b>
         </a>
         <div class="dropdown-menu dropdown-menu-end">
-          <a href="javascript:;" class="dropdown-item"
+          <a
+            href="javascript:;"
+            class="dropdown-item"
+            @click="
+              (e) => {
+                e.preventDefault();
+                setLanguage('EN');
+              }
+            "
             ><span class="fi fi-us me-2" title="us"></span> English</a
           >
-          <a href="javascript:;" class="dropdown-item"
+          <a
+            href="javascript:;"
+            class="dropdown-item"
+            @click="
+              (e) => {
+                e.preventDefault();
+                setLanguage('ID');
+              }
+            "
             ><span class="fi fi-id me-2" title="id"></span> Indonesian</a
           >
         </div>

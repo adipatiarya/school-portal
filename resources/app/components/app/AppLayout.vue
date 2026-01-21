@@ -2,8 +2,33 @@
 import { useAppOptionStore } from "@/stores/app-option";
 import AppSidebar from "@/components/app/Sidebar.vue";
 import AppHeader from "@/components/app/Header.vue";
-//import AppThemePanel from "@/components/app/ThemePanel.vue";
+import { useAppVariableStore, generateVariables } from "@/stores/app-variable";
+import useEmitter from "@/composables/useEmitter";
+import { onMounted } from "vue";
+
 const appOption = useAppOptionStore();
+const appVariable = useAppVariableStore();
+const emitter = useEmitter();
+
+function reloadVariable() {
+  var newVariables = generateVariables();
+  appVariable.font = newVariables.font;
+  appVariable.color = newVariables.color;
+}
+
+function setDarkMode(darkMode) {
+  if (darkMode == "true") {
+    document.querySelector("html").setAttribute("data-bs-theme", "dark");
+  } else {
+    document.querySelector("html").removeAttribute("data-bs-theme");
+  }
+  reloadVariable();
+  emitter.emit("theme-reload", true);
+}
+
+onMounted(() => {
+  setDarkMode("true");
+});
 </script>
 
 <template>

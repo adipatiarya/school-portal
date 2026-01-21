@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import AppLayout from "@/components/app/AppLayout.vue";
-import AppThemePanel from "@/components/app/ThemePanel.vue";
+import { useI18n } from "vue-i18n";
+//import AppThemePanel from "@/components/app/ThemePanel.vue";
+const { t } = useI18n();
 </script>
 
 <template>
@@ -13,7 +15,10 @@ import AppThemePanel from "@/components/app/ThemePanel.vue";
     </ol>
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
-    <h1 class="page-header">DASHBOARD</h1>
+    <h1 class="page-header">
+      DASHBOARD
+      <p>{{ t("Selamat Datang") }}</p>
+    </h1>
     <!-- END page-header -->
     <!-- BEGIN panel -->
     <!-- <panel>
@@ -24,8 +29,8 @@ import AppThemePanel from "@/components/app/ThemePanel.vue";
       <panel-body> Panel Content Here </panel-body>
     </panel> -->
     <!-- END panel -->
-    <template #app-theme-panel>
+    <!-- <template #app-theme-panel>
       <AppThemePanel></AppThemePanel>
-    </template>
+    </template> -->
   </AppLayout>
 </template>

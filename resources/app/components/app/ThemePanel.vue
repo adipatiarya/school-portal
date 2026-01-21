@@ -161,6 +161,8 @@ onMounted(() => {
       appOption.appGradientEnabled = localStorage.appGradientEnabled;
     }
   }
+
+  setDarkMode("true"); // default dark mode
 });
 </script>
 <template>
