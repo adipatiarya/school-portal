@@ -23,17 +23,18 @@ const reversedMenu = computed(() => {
   return props.menu.children.filter(({ show }) => show).length;
 });
 
-function subIsActive(urls) {
-  var currentRoute = useRouter().currentRoute.value.path;
-  var match = false;
-
-  for (var x = 0; x < urls.length; x++) {
-    if (urls[x].url == currentRoute) {
-      match = true;
-    }
+function subIsActive(urls: Array<any>) {
+  var currentRoute = useRouter().currentRoute.value.name;
+  const split = currentRoute.toString().split("_"); //posts_detail
+  if (split.length > 0) {
+    currentRoute = split[0];
   }
+  return urls.some((i) => i.url === currentRoute);
+}
+function subIsExpand(urls: Array<any>) {
+  var currentRoute = useRouter().currentRoute.value.name;
 
-  return match;
+  return urls.some((i) => i.url === currentRoute);
 }
 </script>
 <template>
@@ -41,7 +42,7 @@ function subIsActive(urls) {
   <div
     v-if="menu.children"
     class="menu-item has-sub"
-    v-bind:class="{ active: subIsActive(menu.children) }"
+    v-bind:class="`${subIsActive(menu.children) && 'active'} ${subIsExpand(menu.children) ? 'expand' : 'closed'}`"
   >
     <a class="menu-link" v-if="reversedMenu">
       <span class="menu-icon" v-if="menu.icon">
@@ -60,7 +61,12 @@ function subIsActive(urls) {
       </span>
       <span class="menu-caret" v-if="menu.children"></span>
     </a>
-    <div class="menu-submenu">
+    <div
+      class="menu-submenu"
+      :style="
+        !subIsExpand(menu.children) && 'box-sizing: border-box; display: none;'
+      "
+    >
       <template v-for="(submenu, index) in menu.children">
         <sidebar-nav v-bind:menu="submenu"></sidebar-nav>
       </template>
@@ -70,11 +76,17 @@ function subIsActive(urls) {
   <!-- menu without submenu -->
   <router-link
     v-else
-    v-bind:to="menu.url"
+    v-bind:to="{ name: menu.url }"
     custom
     v-slot="{ navigate, href, isActive }"
   >
-    <div class="menu-item" v-bind:class="{ active: isActive }" v-if="menu.show">
+    <div
+      class="menu-item"
+      v-bind:class="{
+        active: menu.url === useRouter().currentRoute.value.name,
+      }"
+      v-if="menu.show"
+    >
       <a v-bind:href="href" @click="navigate" class="menu-link">
         <span class="menu-icon" v-if="menu.icon">
           <i v-bind:class="menu.icon"></i>
