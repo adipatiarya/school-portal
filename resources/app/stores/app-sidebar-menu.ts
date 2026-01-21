@@ -31,11 +31,44 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
               title: "Tambah Baru",
               show: true,
             },
-            // {
-            //   url: "/posts/categories",
-            //   title: "Kategori",
-            //   show: true,
-            // },
+            {
+              url: RouterName.POSTS_CATEGORIES,
+              title: "Kategori",
+              show: true,
+            },
+          ],
+        },
+        {
+          title: "Halaman",
+          icon: "fa fa-note-sticky",
+          children: [
+            {
+              url: RouterName.PAGES,
+              title: "Data Halaman",
+              show: true,
+            },
+            {
+              url: RouterName.PAGES_CREATE,
+              title: "Tambah Baru",
+              show: true,
+            },
+          ],
+        },
+        {
+          title: "",
+          icon: "fa fa-newspaper-o",
+          show: true,
+          children: [
+            {
+              url: RouterName.POSTS,
+              title: "Data Artikel",
+              show: true,
+            },
+            {
+              url: RouterName.POSTS_CREATE,
+              title: "Tambah Baru",
+              show: true,
+            },
           ],
         },
       ];

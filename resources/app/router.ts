@@ -15,9 +15,10 @@ const router = createRouter({
       name: RouterName.DASHBOARD,
       meta: { requiresAuth: true },
     },
+
+    /*POSTS*/
     {
       path: "/posts",
-
       children: [
         {
           path: "",
@@ -38,8 +39,42 @@ const router = createRouter({
           name: RouterName.POSTS_CREATE,
           meta: { requiresAuth: true },
         },
+        {
+          path: "/categories",
+          component: () => import("./pages/posts/categories.vue"),
+          name: RouterName.POSTS_CATEGORIES,
+          meta: { requiresAuth: true },
+        },
       ],
     },
+    /*END POSTS */
+
+    /*PAGES*/
+    {
+      path: "/pages",
+      children: [
+        {
+          path: "",
+          component: () => import("./pages/pages/index.vue"),
+          name: RouterName.PAGES,
+          meta: { requiresAuth: true },
+        },
+
+        {
+          path: "detail/:id",
+          component: () => import("./pages/pages/detail.vue"),
+          name: RouterName.PAGES_DETAIL,
+          meta: { requiresAuth: true },
+        },
+        {
+          path: "/create",
+          component: () => import("./pages/pages/create.vue"),
+          name: RouterName.PAGES_CREATE,
+          meta: { requiresAuth: true },
+        },
+      ],
+    },
+    /*END PAGES */
 
     {
       path: "/auth/login",
