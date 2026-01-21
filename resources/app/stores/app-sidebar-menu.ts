@@ -16,22 +16,22 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
         },
         { text: "Web Portal", is_header: true },
         {
-          title: "Artikel dan Berita",
+          title: "Artikel",
           icon: "fa fa-newspaper-o",
           children: [
             {
               url: "/posts",
-              title: "List",
+              title: "Daftar Artikel",
               show: true,
             },
             {
               url: "/posts/create",
-              title: "Add new",
+              title: "Tambah Baru",
               show: true,
             },
             {
               url: "/posts/categories",
-              title: "Kategori",
+              title: "Kategori Artikel",
               show: true,
             },
           ],
@@ -44,24 +44,24 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
           show: true,
         },
         {
-          title: "Pages",
+          title: "Halaman",
           icon: "fa fa-note-sticky",
           children: [
             {
               url: "/pages",
-              title: "List",
+              title: "Daftar Halaman",
               show: true,
             },
             {
               url: "/pages/create",
-              title: "Add new",
+              title: "Tambah Halaman",
               show: true,
             },
           ],
         },
         {
           url: "/comments",
-          title: "Comments",
+          title: "Komentar",
           show: true,
           icon: "fa fa-comments",
         },
@@ -287,7 +287,7 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
         },
         {
           url: "/setting",
-          title: "Manual Books",
+          title: "Buku Panduan",
           show: true,
           icon: "fa fa-book",
         },

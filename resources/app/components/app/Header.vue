@@ -76,7 +76,7 @@ onMounted(() => {
       <RouterLink to="/" class="navbar-brand">
         <i class="bi bi-pie-chart-fill h2 my-2" style="color: #794430"></i>
 
-        <span class="mx-1"><b>Nanana</b> School </span>
+        <span class="mx-1"><b>SKL</b> app</span>
       </RouterLink>
       <button
         type="button"
@@ -142,15 +142,15 @@ onMounted(() => {
           class="navbar-link dropdown-toggle"
           data-bs-toggle="dropdown"
         >
-          <span class="fi fi-us" title="us"></span>
-          <span class="d-none d-sm-inline ms-1">EN</span> <b class="caret"></b>
+          <span class="fi fi-id" title="us"></span>
+          <span class="d-none d-sm-inline ms-1">ID</span> <b class="caret"></b>
         </a>
         <div class="dropdown-menu dropdown-menu-end">
           <a href="javascript:;" class="dropdown-item"
             ><span class="fi fi-us me-2" title="us"></span> English</a
           >
           <a href="javascript:;" class="dropdown-item"
-            ><span class="fi fi-cn me-2" title="id"></span> Indonesian</a
+            ><span class="fi fi-id me-2" title="id"></span> Indonesian</a
           >
         </div>
       </div>
