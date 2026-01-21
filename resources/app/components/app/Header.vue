@@ -100,9 +100,9 @@ onMounted(() => {
         <span class="icon-bar"></span>
       </button>
       <RouterLink to="/" class="navbar-brand">
-        <i class="bi bi-pie-chart-fill h2 my-2" style="color: #794430"></i>
+        <i class="bi bi-pie-chart-fill h2 my-2"></i>
 
-        <span class="mx-1"><b>SKL</b> app</span>
+        <span class="mx-2"><b>SKL</b> app</span>
       </RouterLink>
       <button
         type="button"

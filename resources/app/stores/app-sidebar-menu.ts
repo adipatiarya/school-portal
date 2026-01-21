@@ -21,7 +21,7 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
           children: [
             {
               url: "/posts",
-              title: "Daftar Artikel",
+              title: "Data Artikel",
               show: true,
             },
             {
@@ -31,7 +31,7 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
             },
             {
               url: "/posts/categories",
-              title: "Kategori Artikel",
+              title: "Kategori",
               show: true,
             },
           ],
@@ -49,12 +49,12 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
           children: [
             {
               url: "/pages",
-              title: "Daftar Halaman",
+              title: "Data Halaman",
               show: true,
             },
             {
               url: "/pages/create",
-              title: "Tambah Halaman",
+              title: "Tambah Baru",
               show: true,
             },
           ],
@@ -77,28 +77,28 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
               children: [
                 {
                   url: "/users",
-                  title: "List Jadwal",
+                  title: "Data Jadwal",
                   show: true,
                 },
                 {
                   url: "/users/create",
-                  title: "Tambah Jadwal",
+                  title: "Tambah Baru",
                   show: true,
                 },
               ],
             },
             {
-              title: "Data Mata Pelajaran",
+              title: "Mata Pelajaran",
               show: true,
               children: [
                 {
                   url: "/users",
-                  title: "List Mata Pelajaran",
+                  title: "Data Mata Pelajaran",
                   show: true,
                 },
                 {
                   url: "/users/create",
-                  title: "Tambah Mata Pelajaran",
+                  title: "Tambah Baru",
                   show: true,
                 },
               ],
@@ -109,12 +109,12 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
               children: [
                 {
                   url: "/users",
-                  title: "List Nilai & Rapor",
+                  title: "Data Nilai & Rapor",
                   show: true,
                 },
                 {
                   url: "/users/create",
-                  title: "Tambah Nilai & Rapor",
+                  title: "Tambah Baru",
                   show: true,
                 },
               ],
@@ -237,7 +237,7 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
             },
             {
               url: "/roles/create",
-              title: "Pesan Orang Tua–Guru",
+              title: "Pesan Orang Tua-Guru",
               show: true,
             },
           ],
@@ -287,7 +287,7 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
         },
         {
           url: "/setting",
-          title: "Buku Panduan",
+          title: "User Guide",
           show: true,
           icon: "fa fa-book",
         },
