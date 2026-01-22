@@ -23,3 +23,93 @@ export enum RouterName {
   SETTINGS = "settings",
   PROFILE = "profile",
 }
+
+export const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: true,
+  plugins: {
+    legend: {
+      display: false,
+    },
+    datalabels: {
+      anchor: "end",
+      align: "top",
+      color: "#fff",
+
+      font: {
+        weight: "bold",
+        size: 10,
+      },
+      formatter: (value) => `${value}%`, // optional kalau mau tambah %
+    },
+  },
+  interaction: {
+    mode: "index",
+    intersect: false,
+  },
+  scales: {
+    y: {
+      border: {
+        color:
+          "rgba(" +
+          getComputedStyle(document.body)
+            .getPropertyValue("--bs-white-rgb")
+            .trim() +
+          ", .15)",
+        width: 0.5,
+      },
+      grid: {
+        color:
+          "rgba(" +
+          getComputedStyle(document.body)
+            .getPropertyValue("--bs-white-rgb")
+            .trim() +
+          ", .15)", // Color of the interior grid lines
+        width: 0.5,
+      },
+      beginAtZero: true,
+      min: 0,
+      max: 125,
+      title: {
+        display: true,
+        text: "KEHADIRAN SISWA",
+
+        font: {
+          size: 12,
+          weight: "bold",
+        },
+        color: "#fff",
+      },
+      ticks: {
+        stepSize: 25,
+        callback: function (value) {
+          return value + "%";
+        },
+        color: "#fff",
+      },
+    },
+    x: {
+      border: {
+        color:
+          "rgba(" +
+          getComputedStyle(document.body)
+            .getPropertyValue("--bs-white-rgb")
+            .trim() +
+          ", .15)", // Color of the vertical/horizontal axis line
+        width: 0.5,
+      },
+      grid: {
+        color:
+          "rgba(" +
+          getComputedStyle(document.body)
+            .getPropertyValue("--bs-white-rgb")
+            .trim() +
+          ", .15)", // Color of the interior grid lines
+        width: 0.5,
+      },
+      ticks: {
+        color: "#fff",
+      },
+    },
+  },
+};

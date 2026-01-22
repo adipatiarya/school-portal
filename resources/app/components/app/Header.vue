@@ -57,17 +57,17 @@ function handleWindowResize() {
   });
 }
 
-// const buildTitle = () => {
-//   const text = window.config.app_name.split(" ");
-//   if (text.length > 0) {
-//     const name = text[0];
-//     const info = text.slice(1).join(" ");
+const buildTitle = () => {
+  const text = window.config.app_name.split(" ");
+  if (text.length > 0) {
+    const name = text[0];
+    const info = text.slice(1).join(" ");
 
-//     return { name, info };
-//   }
+    return { name, info };
+  }
 
-//   return { name: text[0], info: "" };
-// };
+  return { name: text[0], info: "" };
+};
 
 onMounted(() => {
   handleWindowResize();
@@ -102,7 +102,9 @@ onMounted(() => {
       <RouterLink to="/" class="navbar-brand">
         <i class="bi bi-pie-chart-fill h2 my-2"></i>
 
-        <span class="mx-2"><b>SKL</b> app</span>
+        <span class="mx-2"
+          ><b>{{ buildTitle().name }}</b> {{ buildTitle().info }}</span
+        >
       </RouterLink>
       <button
         type="button"
