@@ -49,6 +49,15 @@ const router = createRouter({
     },
     /*END POSTS */
 
+    /*MEDIA */
+    {
+      path: "/media",
+      component: () => import("./pages/media/index.vue"),
+      name: RouterName.MEDIA,
+      meta: { requiresAuth: true },
+    },
+    /*MEDIA */
+
     /*PAGES*/
     {
       path: "/pages",
@@ -75,6 +84,15 @@ const router = createRouter({
       ],
     },
     /*END PAGES */
+
+    /*MEDIA */
+    {
+      path: "/comments",
+      component: () => import("./pages/comments/index.vue"),
+      name: RouterName.COMMENTS,
+      meta: { requiresAuth: true },
+    },
+    /*MEDIA */
 
     {
       path: "/auth/login",

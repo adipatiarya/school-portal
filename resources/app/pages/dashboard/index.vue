@@ -15,22 +15,74 @@ const { t } = useI18n();
     </ol>
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
-    <h1 class="page-header">
-      DASHBOARD
-      <p>{{ t("Selamat Datang") }}</p>
-    </h1>
-    <!-- END page-header -->
-    <!-- BEGIN panel -->
-    <!-- <panel>
-      <panel-header>
-        <panel-title>Panel Title here</panel-title>
-        <panel-toolbar />
-      </panel-header>
-      <panel-body> Panel Content Here </panel-body>
-    </panel> -->
-    <!-- END panel -->
-    <!-- <template #app-theme-panel>
-      <AppThemePanel></AppThemePanel>
-    </template> -->
+    <h1 class="page-header">DASHBOARD</h1>
+    <div class="row">
+      <!-- BEGIN col-3 -->
+      <div class="col-xl-3 col-md-6">
+        <div class="widget widget-stats bg-blue">
+          <div class="stats-icon"><i class="fa fa-users"></i></div>
+          <div class="stats-info">
+            <h4>SISWA</h4>
+            <p>3,291,922</p>
+          </div>
+          <div class="stats-link">
+            <a href="javascript:;"
+              >View Detail <i class="fa fa-arrow-alt-circle-right"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <!-- END col-3 -->
+      <!-- BEGIN col-3 -->
+      <div class="col-xl-3 col-md-6">
+        <div class="widget widget-stats bg-info">
+          <div class="stats-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div class="stats-info">
+            <h4>GURU</h4>
+            <p>150</p>
+          </div>
+          <div class="stats-link">
+            <a href="javascript:;"
+              >View Detail <i class="fa fa-arrow-alt-circle-right"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <!-- END col-3 -->
+      <!-- BEGIN col-3 -->
+      <div class="col-xl-3 col-md-6">
+        <div class="widget widget-stats bg-orange">
+          <div class="stats-icon"><i class="fa fa-credit-card"></i></div>
+          <div class="stats-info">
+            <h4>PENDAPATAN</h4>
+            <p>1,291,922</p>
+          </div>
+          <div class="stats-link">
+            <a href="javascript:;"
+              >View Detail <i class="fa fa-arrow-alt-circle-right"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <!-- END col-3 -->
+      <!-- BEGIN col-3 -->
+      <div class="col-xl-3 col-md-6">
+        <div class="widget widget-stats bg-red">
+          <div class="stats-icon"><i class="fa fa-clock"></i></div>
+          <div class="stats-info">
+            <h4>AKTIFITAS HARIAN</h4>
+            <p>20%</p>
+          </div>
+          <div class="stats-link">
+            <a href="javascript:;"
+              >View Detail <i class="fa fa-arrow-alt-circle-right"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <!-- END col-3 -->
+    </div>
   </AppLayout>
 </template>

@@ -15,7 +15,7 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
           title: "Dashboard",
           show: true,
         },
-        { text: "Web Portal", is_header: true },
+        { text: "Content Management", is_header: true },
         {
           title: "Artikel",
           icon: "fa fa-newspaper-o",
@@ -39,6 +39,12 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
           ],
         },
         {
+          url: RouterName.MEDIA,
+          title: "Media",
+          icon: "fa fa-image",
+          show: true,
+        },
+        {
           title: "Halaman",
           icon: "fa fa-note-sticky",
           children: [
@@ -55,21 +61,10 @@ export const useAppSidebarMenuStore = defineStore("appSidebarMenu", {
           ],
         },
         {
-          title: "",
-          icon: "fa fa-newspaper-o",
+          url: RouterName.COMMENTS,
+          title: "Komentar",
           show: true,
-          children: [
-            {
-              url: RouterName.POSTS,
-              title: "Data Artikel",
-              show: true,
-            },
-            {
-              url: RouterName.POSTS_CREATE,
-              title: "Tambah Baru",
-              show: true,
-            },
-          ],
+          icon: "fa fa-comments",
         },
       ];
       this.menus = perms;
