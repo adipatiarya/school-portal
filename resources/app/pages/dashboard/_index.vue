@@ -51,8 +51,6 @@ export default {
         this.dateRange.end = end.format("D MMMM YYYY");
       }
     );
-
-    this.renderMap();
   },
   data() {
     return {
@@ -331,6 +329,21 @@ export default {
               show: false,
               curve: "straight",
             },
+          },
+        },
+        pieChart: {
+          height: 180,
+          series: [416747, 784466],
+          options: {
+            labels: ["New Visitors", "Return Visitors"],
+            chart: { type: "donut" },
+            dataLabels: {
+              dropShadow: { enabled: false },
+              style: { colors: ["#fff"] },
+            },
+            stroke: { show: false },
+            colors: [appVariable.color.blue, appVariable.color.teal],
+            legend: { show: false },
           },
         },
       };
@@ -804,372 +817,81 @@ export default {
 </script>
 <template>
   <app-layout>
-    <!-- BEGIN breadcrumb -->
-    <ol class="breadcrumb float-xl-end">
-      <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-      <li class="breadcrumb-item"><a href="javascript:;">Dashboard</a></li>
-      <li class="breadcrumb-item active">Dashboard v3</li>
-    </ol>
-    <!-- END breadcrumb -->
-    <!-- BEGIN page-header -->
     <h1 class="page-header mb-3">Dashboard</h1>
-    <!-- END page-header -->
-    <!-- BEGIN daterange-filter -->
-    <div class="d-sm-flex align-items-center mb-3">
-      <a
-        href="#"
-        class="btn btn-dark me-10px text-truncate"
-        id="daterange-filter"
-      >
-        <i
-          class="fa fa-calendar fa-fw text-white text-opacity-50 ms-n1 me-1"
-        ></i>
-        <span> {{ dateRange.start }} - {{ dateRange.end }} </span>
-        <b class="caret ms-3 opacity-50"></b>
-      </a>
-      <div class="text-gray-600 fw-bold mt-2 mt-sm-0">
-        compared to
-        <span id="daterange-prev-date">
-          {{ prevRange.start }} - {{ prevRange.end }}
-        </span>
-      </div>
-    </div>
-    <!-- END daterange-filter -->
-    <!-- BEGIN row -->
+
     <div class="row">
-      <!-- BEGIN col-6 -->
-      <div class="col-xl-6">
-        <!-- BEGIN card -->
-        <div class="card border-0 mb-3 overflow-hidden bg-gray-800 text-white">
-          <!-- BEGIN card-body -->
-          <div class="card-body">
-            <!-- BEGIN row -->
-            <div class="row">
-              <!-- BEGIN col-7 -->
-              <div class="col-xl-7 col-lg-8">
-                <!-- BEGIN title -->
-                <div class="mb-3 text-gray-500">
-                  <b>TOTAL SISWA</b>
-                  <span class="ms-2">
-                    <i
-                      class="fa fa-info-circle"
-                      data-bs-toggle="popover"
-                      data-bs-trigger="hover"
-                      data-bs-title="Total sales"
-                      data-bs-placement="top"
-                      data-bs-content="Net sales (gross sales minus discounts and returns) plus taxes and shipping. Includes orders from all sales channels."
-                    ></i>
-                  </span>
-                </div>
-                <!-- END title -->
-                <!-- BEGIN total-sales -->
-                <div class="d-flex mb-1">
-                  <h2 class="mb-0">
-                    <span data-animation="number" data-value="64559">0</span>
-                  </h2>
-                  <div class="ms-auto mt-n1 mb-n1">
-                    <apexchart
-                      type="line"
-                      height="36"
-                      :options="sales.chart.options"
-                      :series="sales.chart.series"
-                    ></apexchart>
-                  </div>
-                </div>
-                <!-- END total-sales -->
-                <!-- BEGIN percentage -->
-                <div class="mb-3 text-gray-500">
-                  <i class="fa fa-caret-up"></i>
-                  <span data-animation="number" data-value="33.21">0.00</span>%
-                  compare to last week
-                </div>
-                <!-- END percentage -->
-                <hr class="bg-white bg-opacity-50" />
-                <!-- BEGIN row -->
-                <div class="row text-truncate">
-                  <!-- BEGIN col-6 -->
-                  <div class="col-6">
-                    <div class="text-gray-500">Total sales order</div>
-                    <div
-                      class="fs-18px mb-8px fw-bold"
-                      data-animation="number"
-                      data-value="1568"
-                    >
-                      0
-                    </div>
-                    <div class="progress h-5px rounded-3 bg-gray-900 mb-5px">
-                      <div
-                        class="progress-bar progress-bar-striped rounded-right bg-teal"
-                        data-animation="width"
-                        data-value="55%"
-                        style="width: 0%"
-                      ></div>
-                    </div>
-                  </div>
-                  <!-- END col-6 -->
-                  <!-- BEGIN col-6 -->
-                  <div class="col-6">
-                    <div class="text-gray-500">Avg. sales per order</div>
-                    <div class="fs-18px mb-8px fw-bold">
-                      $<span data-animation="number" data-value="41.20"
-                        >0.00</span
-                      >
-                    </div>
-                    <div class="progress h-5px rounded-3 bg-gray-900 mb-5px">
-                      <div
-                        class="progress-bar progress-bar-striped rounded-right"
-                        data-animation="width"
-                        data-value="55%"
-                        style="width: 0%"
-                      ></div>
-                    </div>
-                  </div>
-                  <!-- END col-6 -->
-                </div>
-                <!-- END row -->
-              </div>
-              <!-- END col-7 -->
-              <!-- BEGIN col-5 -->
-              <div
-                class="col-xl-5 col-lg-4 align-items-center d-flex justify-content-center"
-              >
-                <img
-                  src="/assets/img/svg/img-1.svg"
-                  height="150"
-                  class="d-none d-lg-block"
-                />
-              </div>
-              <!-- END col-5 -->
-            </div>
-            <!-- END row -->
+      <!-- BEGIN col-3 -->
+      <div class="col-xl-3 col-md-6">
+        <div class="widget widget-stats bg-teal">
+          <div class="stats-icon stats-icon-lg">
+            <i class="fa fa-users fa-fw"></i>
           </div>
-          <!-- END card-body -->
+          <div class="stats-content">
+            <div class="stats-title">TOTAL SISWA</div>
+            <div class="stats-number">7,842,900</div>
+            <div class="stats-link">
+              <a href="javascript:;"
+                >View Detail <i class="fa fa-arrow-alt-circle-right"></i
+              ></a>
+            </div>
+          </div>
         </div>
-        <!-- END card -->
       </div>
-      <!-- END col-6 -->
-      <!-- BEGIN col-6 -->
-      <div class="col-xl-6">
-        <!-- BEGIN row -->
-        <div class="row">
-          <!-- BEGIN col-6 -->
-          <div class="col-sm-6">
-            <!-- BEGIN card -->
-            <div
-              class="card border-0 text-truncate mb-3 bg-gray-800 text-white"
-            >
-              <!-- BEGIN card-body -->
-              <div class="card-body">
-                <!-- BEGIN title -->
-                <div class="mb-3 text-gray-500">
-                  <b class="mb-3">CONVERSION RATE</b>
-                  <span class="ms-2"
-                    ><i
-                      class="fa fa-info-circle"
-                      data-bs-toggle="popover"
-                      data-bs-trigger="hover"
-                      data-bs-title="Conversion Rate"
-                      data-bs-placement="top"
-                      data-bs-content="Percentage of sessions that resulted in orders from total number of sessions."
-                      data-original-title=""
-                      title=""
-                    ></i
-                  ></span>
-                </div>
-                <!-- END title -->
-                <!-- BEGIN conversion-rate -->
-                <div class="d-flex align-items-center mb-1">
-                  <h2 class="text-white mb-0">
-                    <span data-animation="number" data-value="2.19">0.00</span>%
-                  </h2>
-                  <div class="ms-auto">
-                    <apexchart
-                      type="line"
-                      height="28"
-                      :options="conversion.chart.options"
-                      :series="conversion.chart.series"
-                    ></apexchart>
-                  </div>
-                </div>
-                <!-- END conversion-rate -->
-                <!-- BEGIN percentage -->
-                <div class="mb-4 text-gray-500">
-                  <i class="fa fa-caret-down"></i>
-                  <span data-animation="number" data-value="0.50">0.00</span>%
-                  compare to last week
-                </div>
-                <!-- END percentage -->
-                <!-- BEGIN info-row -->
-                <div class="d-flex mb-2">
-                  <div class="d-flex align-items-center">
-                    <i class="fa fa-circle text-red fs-8px me-2"></i>
-                    Added to cart
-                  </div>
-                  <div class="d-flex align-items-center ms-auto">
-                    <div class="text-gray-500 small">
-                      <i class="fa fa-caret-up"></i>
-                      <span data-animation="number" data-value="262">0</span>%
-                    </div>
-                    <div class="w-50px text-end ps-2 fw-bold">
-                      <span data-animation="number" data-value="3.79">0.00</span
-                      >%
-                    </div>
-                  </div>
-                </div>
-                <!-- END info-row -->
-                <!-- BEGIN info-row -->
-                <div class="d-flex mb-2">
-                  <div class="d-flex align-items-center">
-                    <i class="fa fa-circle text-warning fs-8px me-2"></i>
-                    Reached checkout
-                  </div>
-                  <div class="d-flex align-items-center ms-auto">
-                    <div class="text-gray-500 small">
-                      <i class="fa fa-caret-up"></i>
-                      <span data-animation="number" data-value="11">0</span>%
-                    </div>
-                    <div class="w-50px text-end ps-2 fw-bold">
-                      <span data-animation="number" data-value="3.85">0.00</span
-                      >%
-                    </div>
-                  </div>
-                </div>
-                <!-- END info-row -->
-                <!-- BEGIN info-row -->
-                <div class="d-flex">
-                  <div class="d-flex align-items-center">
-                    <i class="fa fa-circle text-lime fs-8px me-2"></i>
-                    Sessions converted
-                  </div>
-                  <div class="d-flex align-items-center ms-auto">
-                    <div class="text-gray-500 small">
-                      <i class="fa fa-caret-up"></i>
-                      <span data-animation="number" data-value="57">0</span>%
-                    </div>
-                    <div class="w-50px text-end ps-2 fw-bold">
-                      <span data-animation="number" data-value="2.19">0.00</span
-                      >%
-                    </div>
-                  </div>
-                </div>
-                <!-- END info-row -->
-              </div>
-              <!-- END card-body -->
-            </div>
-            <!-- END card -->
+      <!-- END col-3 -->
+      <!-- BEGIN col-3 -->
+      <div class="col-xl-3 col-md-6">
+        <div class="widget widget-stats bg-blue">
+          <div class="stats-icon stats-icon-lg">
+            <i class="fa fa-dollar-sign fa-fw"></i>
           </div>
-          <!-- END col-6 -->
-          <!-- BEGIN col-6 -->
-          <div class="col-sm-6">
-            <!-- BEGIN card -->
-            <div
-              class="card border-0 text-truncate mb-3 bg-gray-800 text-white"
-            >
-              <!-- BEGIN card-body -->
-              <div class="card-body">
-                <!-- BEGIN title -->
-                <div class="mb-3 text-gray-500">
-                  <b class="mb-3">STORE SESSIONS</b>
-                  <span class="ms-2"
-                    ><i
-                      class="fa fa-info-circle"
-                      data-bs-toggle="popover"
-                      data-bs-trigger="hover"
-                      data-bs-title="Store Sessions"
-                      data-bs-placement="top"
-                      data-bs-content="Number of sessions on your online store. A session is a period of continuous activity from a visitor."
-                      data-original-title=""
-                      title=""
-                    ></i
-                  ></span>
-                </div>
-                <!-- END title -->
-                <!-- BEGIN store-session -->
-                <div class="d-flex align-items-center mb-1">
-                  <h2 class="text-white mb-0">
-                    <span data-animation="number" data-value="70719">0</span>
-                  </h2>
-                  <div class="ms-auto">
-                    <apexchart
-                      type="line"
-                      height="28"
-                      :options="session.chart.options"
-                      :series="session.chart.series"
-                    ></apexchart>
-                  </div>
-                </div>
-                <!-- END store-session -->
-                <!-- BEGIN percentage -->
-                <div class="mb-4 text-gray-500">
-                  <i class="fa fa-caret-up"></i>
-                  <span data-animation="number" data-value="9.5">0.00</span>%
-                  compare to last week
-                </div>
-                <!-- END percentage -->
-                <!-- BEGIN info-row -->
-                <div class="d-flex mb-2">
-                  <div class="d-flex align-items-center">
-                    <i class="fa fa-circle text-teal fs-8px me-2"></i>
-                    Mobile
-                  </div>
-                  <div class="d-flex align-items-center ms-auto">
-                    <div class="text-gray-500 small">
-                      <i class="fa fa-caret-up"></i>
-                      <span data-animation="number" data-value="25.7">0.00</span
-                      >%
-                    </div>
-                    <div class="w-50px text-end ps-2 fw-bold">
-                      <span data-animation="number" data-value="53210">0</span>
-                    </div>
-                  </div>
-                </div>
-                <!-- END info-row -->
-                <!-- BEGIN info-row -->
-                <div class="d-flex mb-2">
-                  <div class="d-flex align-items-center">
-                    <i class="fa fa-circle text-blue fs-8px me-2"></i>
-                    Desktop
-                  </div>
-                  <div class="d-flex align-items-center ms-auto">
-                    <div class="text-gray-500 small">
-                      <i class="fa fa-caret-up"></i>
-                      <span data-animation="number" data-value="16.0">0.00</span
-                      >%
-                    </div>
-                    <div class="w-50px text-end ps-2 fw-bold">
-                      <span data-animation="number" data-value="11959">0</span>
-                    </div>
-                  </div>
-                </div>
-                <!-- END info-row -->
-                <!-- BEGIN info-row -->
-                <div class="d-flex">
-                  <div class="d-flex align-items-center">
-                    <i class="fa fa-circle text-cyan fs-8px me-2"></i>
-                    Tablet
-                  </div>
-                  <div class="d-flex align-items-center ms-auto">
-                    <div class="text-gray-500 small">
-                      <i class="fa fa-caret-up"></i>
-                      <span data-animation="number" data-value="7.9">0.00</span
-                      >%
-                    </div>
-                    <div class="w-50px text-end ps-2 fw-bold">
-                      <span data-animation="number" data-value="5545">0</span>
-                    </div>
-                  </div>
-                </div>
-                <!-- END info-row -->
-              </div>
-              <!-- END card-body -->
+          <div class="stats-content">
+            <div class="stats-title">TOTAL GURU</div>
+            <div class="stats-number">180,200</div>
+            <div class="stats-link">
+              <a href="javascript:;"
+                >View Detail <i class="fa fa-arrow-alt-circle-right"></i
+              ></a>
             </div>
-            <!-- END card -->
           </div>
-          <!-- END col-6 -->
         </div>
-        <!-- END row -->
       </div>
-      <!-- END col-6 -->
+      <!-- END col-3 -->
+      <!-- BEGIN col-3 -->
+      <div class="col-xl-3 col-md-6">
+        <div class="widget widget-stats bg-indigo">
+          <div class="stats-icon stats-icon-lg">
+            <i class="fa fa-archive fa-fw"></i>
+          </div>
+          <div class="stats-content">
+            <div class="stats-title">TOTAL MATA PELAJARAN</div>
+            <div class="stats-number">38,900</div>
+            <div class="stats-link">
+              <a href="javascript:;"
+                >View Detail <i class="fa fa-arrow-alt-circle-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END col-3 -->
+      <!-- BEGIN col-3 -->
+      <div class="col-xl-3 col-md-6">
+        <div class="widget widget-stats bg-dark">
+          <div class="stats-icon stats-icon-lg">
+            <i class="fa fa-comment-alt fa-fw"></i>
+          </div>
+          <div class="stats-content">
+            <div class="stats-title">TOTAL JURUSAN</div>
+            <div class="stats-number">3,988</div>
+            <div class="stats-link">
+              <a href="javascript:;"
+                >View Detail <i class="fa fa-arrow-alt-circle-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END col-3 -->
     </div>
     <!-- END row -->
     <!-- BEGIN row -->
@@ -1243,97 +965,60 @@ export default {
         <!-- END card -->
       </div>
       <!-- END col-8 -->
-      <!-- BEGIN col-4 -->
+
       <div class="col-xl-4 col-lg-6">
-        <!-- BEGIN card -->
-        <div class="card border-0 mb-3 bg-gray-800 text-white">
-          <div class="card-body">
-            <div class="mb-2 text-gray-500">
-              <b>SESSION BY LOCATION</b>
-              <span class="ms-2"
-                ><i
-                  class="fa fa-info-circle"
-                  data-bs-toggle="popover"
-                  data-bs-trigger="hover"
-                  data-bs-title="Total sales"
-                  data-bs-placement="top"
-                  data-bs-content="Net sales (gross sales minus discounts and returns) plus taxes and shipping. Includes orders from all sales channels."
-                ></i
-              ></span>
-            </div>
-            <div id="map-container" class="mb-2" style="height: 200px"></div>
-            <div>
-              <div class="d-flex align-items-center text-white mb-2">
-                <div
-                  class="widget-img widget-img-xs rounded bg-dark me-2 w-40px"
-                  style="background-image: url(/assets/img/flag/us.jpg)"
-                ></div>
-                <div class="d-flex w-100">
-                  <div>United States</div>
-                  <div class="ms-auto text-gray-500">
-                    <span data-animation="number" data-value="39.85">0.00</span
-                    >%
-                  </div>
-                </div>
+        <div class="widget-chart inverse-mode">
+          <div class="widget-chart-sidebar bg-gray-900" style="width: 100%">
+            <div class="d-flex justify-content-between">
+              <div class="mb-3 text-gray-500">
+                <b>PEMBAYARAN SPP</b>
+                <span class="ms-2"
+                  ><i
+                    class="fa fa-info-circle"
+                    data-bs-toggle="popover"
+                    data-bs-trigger="hover"
+                    data-bs-title="Top products with units sold"
+                    data-bs-placement="top"
+                    data-bs-content="Products with the most individual units sold. Includes orders from all sales channels."
+                    data-original-title=""
+                    title=""
+                  ></i
+                ></span>
               </div>
-              <div class="d-flex align-items-center text-white mb-2">
-                <div
-                  class="widget-img widget-img-xs rounded bg-dark me-2 w-40px"
-                  style="background-image: url(/assets/img/flag/cn.jpg)"
-                ></div>
-                <div class="d-flex w-100">
-                  <div>China</div>
-                  <div class="ms-auto text-gray-500">
-                    <span data-animation="number" data-value="14.23">0.00</span
-                    >%
-                  </div>
-                </div>
-              </div>
-              <div class="d-flex align-items-center text-white mb-2">
-                <div
-                  class="widget-img widget-img-xs rounded bg-dark me-2 w-40px"
-                  style="background-image: url(/assets/img/flag/de.jpg)"
-                ></div>
-                <div class="d-flex w-100">
-                  <div>Germany</div>
-                  <div class="ms-auto text-gray-500">
-                    <span data-animation="number" data-value="12.83">0.00</span
-                    >%
-                  </div>
-                </div>
-              </div>
-              <div class="d-flex align-items-center text-white mb-2">
-                <div
-                  class="widget-img widget-img-xs rounded bg-dark me-2 w-40px"
-                  style="background-image: url(/assets/img/flag/fr.jpg)"
-                ></div>
-                <div class="d-flex w-100">
-                  <div>France</div>
-                  <div class="ms-auto text-gray-500">
-                    <span data-animation="number" data-value="11.14">0.00</span
-                    >%
-                  </div>
-                </div>
-              </div>
-              <div class="d-flex align-items-center text-white mb-0">
-                <div
-                  class="widget-img widget-img-xs rounded bg-dark me-2 w-40px"
-                  style="background-image: url(/assets/img/flag/jp.jpg)"
-                ></div>
-                <div class="d-flex w-100">
-                  <div>Japan</div>
-                  <div class="ms-auto text-gray-500">
-                    <span data-animation="number" data-value="10.75">0.00</span
-                    >%
-                  </div>
-                </div>
+              <div class="chart-number">
+                Rp 1,225,729
+                <small>Semester genap</small>
               </div>
             </div>
+
+            <div
+              class="d-flex align-items-center justify-content-center"
+              style="height: 250px"
+            >
+              <apexchart
+                :height="220"
+                :options="visitor.pieChart.options"
+                :series="visitor.pieChart.series"
+              ></apexchart>
+            </div>
+
+            <ul class="chart-legend fs-11px">
+              <li>
+                <i
+                  class="fa fa-circle fa-fw text-blue fs-9px me-5px t-minus-1"
+                ></i>
+                34.0% <span>Siswa yang belum melunasi semester ini</span>
+              </li>
+              <li>
+                <i
+                  class="fa fa-circle fa-fw text-teal fs-9px me-5px t-minus-1"
+                ></i>
+                56.0% <span>Siswa yang sudah melunasi semester ini</span>
+              </li>
+            </ul>
           </div>
         </div>
-        <!-- END card -->
       </div>
-      <!-- END col-4 -->
     </div>
     <!-- END row -->
     <!-- BEGIN row -->
@@ -1462,7 +1147,7 @@ export default {
           <div class="card-body">
             <!-- BEGIN title -->
             <div class="mb-3 text-gray-500">
-              <b>TOP PRODUCTS BY UNITS SOLD</b>
+              <b>JURUSAN PALING BANYAK PEMINAT</b>
               <span class="ms-2"
                 ><i
                   class="fa fa-info-circle"
