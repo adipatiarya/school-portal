@@ -6,6 +6,8 @@ import Panel from "@/components/bootstrap/Panel.vue";
 import BarChart from "@/composables/BarChart";
 
 import { DashboardService } from "@/services/dashboard-service";
+import GradeChart from "@/components/app/GradeChart.vue";
+import PaymentChart from "@/components/app/PaymentChart.vue";
 
 //import AppThemePanel from "@/components/app/ThemePanel.vue";
 const { t } = useI18n();
@@ -143,29 +145,6 @@ async function fetchData() {
     <!-- END breadcrumb -->
     <!-- BEGIN page-header -->
     <h1 class="page-header">DASHBOARD</h1>
-    <panel>
-      <panel-body>
-        <h5 class="page-title text-gray-500">
-          <b> PENGUMUMAN TERBARU</b>
-        </h5>
-        <ul class="list-unstyled">
-          <li>
-            <i class="fa fa-circle text-white fs-8px me-2"></i>
-            <span class="text-white">
-              Ujian Tengah Semester dimulai 5 Feb
-            </span>
-          </li>
-          <li>
-            <i class="fa fa-circle text-white fs-8px me-2"></i>
-            <span class="text-white"> Workshop Guru 12 Maret</span>
-          </li>
-          <li>
-            <i class="fa fa-circle text-white fs-8px me-2"></i>
-            <span class="text-white"> Pengambilan Rapor</span>
-          </li>
-        </ul>
-      </panel-body>
-    </panel>
 
     <div class="d-sm-flex align-items-center mb-3">
       <button
@@ -273,6 +252,11 @@ async function fetchData() {
             <BarChart :data="chartData1" :options="chartOptions" />
           </panel-body>
         </panel>
+      </div>
+      <div class="col-xl-4 col-lg-6">
+        <div class="panel">
+          <div class="panel-body"></div>
+        </div>
       </div>
     </div>
   </AppLayout>

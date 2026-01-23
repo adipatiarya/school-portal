@@ -18,14 +18,16 @@ import PanelHeader from "@/components/bootstrap/PanelHeader.vue";
 import PanelTitle from "@/components/bootstrap/PanelTitle.vue";
 import PanelFooter from "@/components/bootstrap/PanelFooter.vue";
 import PanelToolbar from "@/components/bootstrap/PanelToolbar.vue";
-
+import moment from "moment";
 import "bootstrap";
 import "./scss/vue.scss";
+import "bootstrap-daterangepicker/daterangepicker.css";
 
 import App from "./app.vue";
 import { createPinia } from "pinia";
 import { useAuthStore } from "./stores/auth";
 const emitter = mitt();
+window.moment = moment;
 
 const app = createApp(App);
 app.component("Panel", Panel);

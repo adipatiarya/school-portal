@@ -34,7 +34,7 @@ const data = {
   ],
 };
 
-const options = { responsive: true };
+const options = { responsive: true, maintainAspectRatio: true };
 </script>
 
 <template>

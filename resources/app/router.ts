@@ -11,7 +11,7 @@ const router = createRouter({
     },
     {
       path: "/dashboard",
-      component: () => import("./pages/dashboard/index.vue"),
+      component: () => import("./pages/dashboard/_index.vue"),
       name: RouterName.DASHBOARD,
       meta: { requiresAuth: true },
     },
