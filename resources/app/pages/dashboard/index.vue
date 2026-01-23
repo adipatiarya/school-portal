@@ -145,12 +145,24 @@ async function fetchData() {
     <h1 class="page-header">DASHBOARD</h1>
     <panel>
       <panel-body>
-        <h5 class="page-title">
-          <i class="fas fa-bullhorn mx-2"></i>Pengumuman Terbaru
+        <h5 class="page-title text-gray-500">
+          <b> PENGUMUMAN TERBARU</b>
         </h5>
-        <ul>
-          <li>Ujian Tengah Semester dimulai 5 Feb</li>
-          <li>Workshop Guru 12 Maret</li>
+        <ul class="list-unstyled">
+          <li>
+            <i class="fa fa-circle text-white fs-8px me-2"></i>
+            <span class="text-white">
+              Ujian Tengah Semester dimulai 5 Feb
+            </span>
+          </li>
+          <li>
+            <i class="fa fa-circle text-white fs-8px me-2"></i>
+            <span class="text-white"> Workshop Guru 12 Maret</span>
+          </li>
+          <li>
+            <i class="fa fa-circle text-white fs-8px me-2"></i>
+            <span class="text-white"> Pengambilan Rapor</span>
+          </li>
         </ul>
       </panel-body>
     </panel>
