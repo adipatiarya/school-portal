@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
-
 interface Node {
   name: string;
   path: string;
@@ -8,28 +6,42 @@ interface Node {
   directories?: Node[];
 }
 
-defineProps<{ node: Node }>();
+const props = defineProps<{ node: Node }>();
 
-const isOpen = ref(false);
+const emit = defineEmits<{
+  (e: "selected", node: Node): void;
+}>();
+function handleSelect() {
+  emit("selected", props.node);
+}
 </script>
 
 <template>
   <div class="file-tree">
     <div
       class="file-node"
-      :class="(node.files.length || node.directories.length) && 'has-sub'"
+      :class="
+        (props.node.files.length || props.node.directories.length) && 'has-sub'
+      "
     >
-      <a href="javascript:;" class="file-link"
+      <a href="javascript:;" class="file-link" @click.prevent="handleSelect"
         ><span class="file-arrow"></span
         ><span class="file-info"
           ><span class="file-icon"
             ><i class="fa fa-folder fa-lg text-warning"></i></span
-          ><span class="file-text">{{ node.name }}</span></span
+          ><span class="file-text">{{ props.node.name }}</span></span
         ></a
       >
       <div class="file-tree">
-        <div class="file-node" v-for="file in node.files" :key="file.path">
-          <a href="javascript:;" class="file-link"
+        <div
+          class="file-node"
+          v-for="file in props.node.files"
+          :key="file.path"
+        >
+          <a
+            href="javascript:;"
+            class="file-link"
+            @click.prevent="emit('selected', file)"
             ><span class="file-arrow"></span
             ><span class="file-info"
               ><span class="file-icon"
@@ -42,7 +54,12 @@ const isOpen = ref(false);
         </div>
       </div>
 
-      <TreeView v-for="dir in node.directories" :key="dir.path" :node="dir" />
+      <TreeView
+        v-for="dir in props.node.directories"
+        :key="dir.path"
+        :node="dir"
+        @selected="emit('selected', $event)"
+      />
     </div>
   </div>
 </template>

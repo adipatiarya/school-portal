@@ -1,13 +1,26 @@
-<script>
+<script setup lang="ts">
+import { ref, onMounted, computed } from "vue";
 import { useAppOptionStore } from "@/stores/app-option";
 import { Icon } from "@iconify/vue";
 import AppLayout from "@/components/app/AppLayout.vue";
 import TreeView from "@/components/app/TreeView.vue";
-import TreeTable from "@/components/app/TreeTable.vue";
-
+import moment from "moment";
 const appOption = useAppOptionStore();
+interface Node {
+  name: string;
+  path: string;
+  // untuk file
+  size?: number;
+  last_modified?: string;
+  mime_type?: string;
+  url?: string;
 
-var raw = {
+  // untuk folder
+  files?: Node[];
+  directories?: Node[];
+}
+// raw data
+const raw = ref({
   name: "uploads",
   path: "uploads",
   files: [],
@@ -53,7 +66,16 @@ var raw = {
     {
       name: "2027",
       path: "uploads/2027",
-      files: [],
+      files: [
+        {
+          name: "test_mansasa.pdf",
+          path: "uploads/2026/01-24/test_1769240312.pdf",
+          size: 0,
+          last_modified: "2026-01-24 07:38:32",
+          mime_type: "application/pdf",
+          url: "/storage/uploads/2026/01-24/test_1769240312.pdf",
+        },
+      ],
       directories: [
         {
           name: "01-24",
@@ -89,60 +111,59 @@ var raw = {
       ],
     },
   ],
-};
+});
+const selectedNode = ref<Node | null>(null);
+function onSelectedNode(node: Node) {
+  selectedNode.value = node;
+}
 
-export default {
-  data() {
-    // appOption.appSidebarMinified = true;
-    appOption.appContentFullHeight = true;
-    appOption.appContentClass = "d-flex flex-column";
+// gabungkan files + directories jadi satu array
+// gabungkan files + directories jadi satu array
+const mixedItems = computed(() => {
+  if (!selectedNode.value) return [];
 
-    return {
-      raw: raw,
-    };
-  },
-  beforeRouteLeave(to, from, next) {
-    //  appOption.appSidebarMinified = false;
-    appOption.appContentFullHeight = false;
-    appOption.appContentClass = "";
-    next();
-  },
-  components: {
-    Icon: Icon,
-    AppLayout,
-    TreeView,
-    TreeTable,
-  },
-  mounted() {
-    var fileHasSubNodes = document.querySelectorAll(".file-node.has-sub");
+  const files =
+    selectedNode.value.files?.map((f) => ({ ...f, type: "file" as const })) ??
+    [];
+  const dirs =
+    selectedNode.value.directories?.map((d) => ({
+      ...d,
+      type: "folder" as const,
+    })) ?? [];
 
-    fileHasSubNodes.forEach((node) => {
-      var fileArrow = node.querySelector(".file-link > .file-arrow");
+  return [...files, ...dirs];
+});
 
-      fileArrow.addEventListener("click", function (event) {
-        event.preventDefault();
-        node.classList.toggle("expand");
-      });
+// lifecycle
+onMounted(() => {
+  selectedNode.value = raw.value;
+  appOption.appContentFullHeight = true;
+  appOption.appContentClass = "d-flex flex-column";
+
+  const fileHasSubNodes = document.querySelectorAll(".file-node.has-sub");
+  fileHasSubNodes.forEach((node) => {
+    const fileArrow = node.querySelector(".file-link > .file-arrow");
+    fileArrow?.addEventListener("click", (event) => {
+      event.preventDefault();
+      node.classList.toggle("expand");
     });
+  });
 
-    var fileInfoNodes = document.querySelectorAll(".file-node");
-
-    fileInfoNodes.forEach((node) => {
-      var fileInfo = node.querySelector(".file-link > .file-info");
-
-      fileInfo.addEventListener("click", function (event) {
-        event.preventDefault();
-        fileInfoNodes.forEach((otherNode) => {
-          if (otherNode !== node) {
-            otherNode.classList.remove("selected");
-          }
-        });
-        node.classList.add("expand");
-        node.classList.add("selected");
+  const fileInfoNodes = document.querySelectorAll(".file-node");
+  fileInfoNodes.forEach((node) => {
+    const fileInfo = node.querySelector(".file-link > .file-info");
+    fileInfo?.addEventListener("click", (event) => {
+      event.preventDefault();
+      fileInfoNodes.forEach((otherNode) => {
+        if (otherNode !== node) {
+          otherNode.classList.remove("selected");
+        }
       });
+      node.classList.add("expand");
+      node.classList.add("selected");
     });
-  },
-};
+  });
+});
 </script>
 
 <template>
@@ -313,7 +334,15 @@ export default {
 
                   <div class="file-tree mb-3">
                     <div class="file-node has-sub expand selected">
-                      <a href="javascript:;" class="file-link">
+                      <a
+                        href="javascript:;"
+                        class="file-link"
+                        @click.prevent="
+                          () => {
+                            selectedNode = raw;
+                          }
+                        "
+                      >
                         <span class="file-arrow"></span>
                         <span class="file-info">
                           <span class="file-icon"
@@ -326,6 +355,7 @@ export default {
                         v-for="dir in raw.directories"
                         :key="dir.path"
                         :node="dir"
+                        @selected="onSelectedNode"
                       />
                     </div>
                   </div>
@@ -395,7 +425,7 @@ export default {
               </div>
               <div class="flex-1 overflow-hidden">
                 <perfect-scrollbar class="h-100 p-0">
-                  <!-- <table
+                  <table
                     class="table table-striped table-borderless table-sm m-0 text-nowrap"
                   >
                     <thead>
@@ -409,226 +439,37 @@ export default {
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="fa fa-folder text-warning fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">services</td>
-                        <td class="px-10px">4 KB</td>
-                        <td class="px-10px">Jun 11, 2024, 10:35PM</td>
-                        <td class="px-10px">http:/unix-directory</td>
-                        <td class="px-10px border-0">0755</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="fa fa-folder text-warning fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">portfolio</td>
-                        <td class="px-10px">4 KB</td>
-                        <td class="px-10px">Jun 11, 2024, 10:36PM</td>
-                        <td class="px-10px">http:/unix-directory</td>
-                        <td class="px-10px border-0">0755</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="fa fa-folder text-warning fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">blog</td>
-                        <td class="px-10px">4 KB</td>
-                        <td class="px-10px">Jun 11, 2024, 10:04PM</td>
-                        <td class="px-10px">http:/unix-directory</td>
-                        <td class="px-10px border-0">0755</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="fa fa-folder text-warning fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">assets</td>
-                        <td class="px-10px">4 KB</td>
-                        <td class="px-10px">Jun 11, 2024, 10:14PM</td>
-                        <td class="px-10px">http:/unix-directory</td>
-                        <td class="px-10px border-0">0755</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="fa fa-folder text-warning fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">php</td>
-                        <td class="px-10px">4 KB</td>
-                        <td class="px-10px">Jun 11, 2024, 10:36PM</td>
-                        <td class="px-10px">http:/unix-directory</td>
-                        <td class="px-10px border-0">0755</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="fa fa-folder text-warning fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">docs</td>
-                        <td class="px-10px">4 KB</td>
-                        <td class="px-10px">Jun 11, 2024, 10:36PM</td>
-                        <td class="px-10px">http:/unix-directory</td>
-                        <td class="px-10px border-0">0755</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="fa fa-folder text-warning fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">archives</td>
-                        <td class="px-10px">4 KB</td>
-                        <td class="px-10px">Jun 11, 2024, 10:36PM</td>
-                        <td class="px-10px">http:/unix-directory</td>
-                        <td class="px-10px border-0">0755</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="fa fa-folder text-warning fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">video</td>
-                        <td class="px-10px">4 KB</td>
-                        <td class="px-10px">Jun 11, 2024, 10:36PM</td>
-                        <td class="px-10px">http:/unix-directory</td>
-                        <td class="px-10px border-0">0755</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="fa fa-folder text-warning fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">audio</td>
-                        <td class="px-10px">4 KB</td>
-                        <td class="px-10px">Jun 11, 2024, 10:36PM</td>
-                        <td class="px-10px">http:/unix-directory</td>
-                        <td class="px-10px border-0">0755</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="fa fa-folder text-warning fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">docs</td>
-                        <td class="px-10px">4 KB</td>
-                        <td class="px-10px">Jun 11, 2024, 10:36PM</td>
-                        <td class="px-10px">http:/unix-directory</td>
-                        <td class="px-10px border-0">0755</td>
-                      </tr>
-                      <tr>
+                      <tr
+                        v-for="item in mixedItems"
+                        :key="item.path"
+                        v-if="selectedNode"
+                      >
                         <td class="ps-10px border-0 text-center">
                           <i
-                            class="far fa-file-code text-body text-opacity-50 fa-lg"
+                            class="fa fa-folder text-warning fa-lg"
+                            v-if="item.type == 'folder'"
                           ></i>
-                        </td>
-                        <td class="px-10px border-0">index.html</td>
-                        <td class="px-10px">39.5 KB</td>
-                        <td class="px-10px">July 05, 2024, 10:35PM</td>
-                        <td class="px-10px">text/html</td>
-                        <td class="px-10px border-0">0644</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
                           <i
-                            class="far fa-file-code text-body text-opacity-50 fa-lg"
+                            v-else
+                            class="far fa-file-text text-body text-opacity-50 fa-lg"
                           ></i>
                         </td>
-                        <td class="px-10px border-0">home.html</td>
-                        <td class="px-10px">129.1 KB</td>
-                        <td class="px-10px">July 06, 2024, 1:00PM</td>
-                        <td class="px-10px">text/html</td>
-                        <td class="px-10px border-0">0644</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i
-                            class="far fa-file-code text-body text-opacity-50 fa-lg"
-                          ></i>
+                        <td class="px-10px border-0">{{ item.name }}</td>
+                        <td class="px-10px">{{ item.size ?? 0 }} KB</td>
+                        <td class="px-10px">
+                          {{ moment(item.last_modified).fromNow() }}
                         </td>
-                        <td class="px-10px border-0">about.html</td>
-                        <td class="px-10px">24 KB</td>
-                        <td class="px-10px">July 01, 2024, 6:59AM</td>
-                        <td class="px-10px">text/html</td>
-                        <td class="px-10px border-0">0644</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i
-                            class="far fa-file-code text-body text-opacity-50 fa-lg"
-                          ></i>
+                        <td class="px-10px">
+                          {{
+                            item.type === "file"
+                              ? item.mime_type
+                              : "http:/unix-directory"
+                          }}
                         </td>
-                        <td class="px-10px border-0">contact.html</td>
-                        <td class="px-10px">39.5 KB</td>
-                        <td class="px-10px">July 05, 2024, 10:35PM</td>
-                        <td class="px-10px">text/html</td>
-                        <td class="px-10px border-0">0644</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i
-                            class="far fa-file-code text-body text-opacity-50 fa-lg"
-                          ></i>
-                        </td>
-                        <td class="px-10px border-0">testimonials.html</td>
-                        <td class="px-10px">11 KB</td>
-                        <td class="px-10px">July 05, 2024, 10:35PM</td>
-                        <td class="px-10px">text/html</td>
-                        <td class="px-10px border-0">0644</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i
-                            class="far fa-file-code text-body text-opacity-50 fa-lg"
-                          ></i>
-                        </td>
-                        <td class="px-10px border-0">faq.html</td>
-                        <td class="px-10px">12 KB</td>
-                        <td class="px-10px">July 05, 2024, 1.59PM</td>
-                        <td class="px-10px">text/html</td>
-                        <td class="px-10px border-0">0644</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i
-                            class="far fa-file-code text-body text-opacity-50 fa-lg"
-                          ></i>
-                        </td>
-                        <td class="px-10px border-0">pricing.html</td>
-                        <td class="px-10px">128 KB</td>
-                        <td class="px-10px">July 05, 2024, 12.49PM</td>
-                        <td class="px-10px">text/html</td>
-                        <td class="px-10px border-0">0644</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i
-                            class="far fa-file-code text-body text-opacity-50 fa-lg"
-                          ></i>
-                        </td>
-                        <td class="px-10px border-0">404.shtml</td>
-                        <td class="px-10px">251 bytes</td>
-                        <td class="px-10px">July 10, 2024, 10.35AM</td>
-                        <td class="px-10px">text/html</td>
-                        <td class="px-10px border-0">0644</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i
-                            class="fa fa-file-text text-body text-opacity-50 fa-lg"
-                          ></i>
-                        </td>
-                        <td class="px-10px border-0">.htaccess</td>
-                        <td class="px-10px">128 KB</td>
-                        <td class="px-10px">August 05, 2024, 12.49PM</td>
-                        <td class="px-10px">text/html</td>
-                        <td class="px-10px border-0">0644</td>
-                      </tr>
-                      <tr>
-                        <td class="ps-10px border-0 text-center">
-                          <i class="far fa-file-image text-teal fa-lg"></i>
-                        </td>
-                        <td class="px-10px border-0">favicon.ico</td>
-                        <td class="px-10px">2 KB</td>
-                        <td class="px-10px">July 05, 2024, 7.39AM</td>
-                        <td class="px-10px">image/x-generic</td>
-                        <td class="px-10px border-0">0644</td>
+                        <td class="px-10px border-0">0755</td>
                       </tr>
                     </tbody>
-                  </table> -->
+                  </table>
                 </perfect-scrollbar>
               </div>
             </div>
