@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { faLocation } from "@fortawesome/free-solid-svg-icons";
+import { ref, watch } from "vue";
 
 interface Node {
   name: string;
@@ -11,24 +12,36 @@ interface Node {
 
 const props = defineProps<{ node: Node }>();
 
+const isExpanded = ref(false);
+
 const emit = defineEmits<{
   (e: "selected", node: Node): void;
 }>();
 function handleSelect() {
-  emit("selected", props.node);
+  // emit("selected", props.node);
+  isExpanded.value = !isExpanded.value;
 }
 function reloadPage(url: string) {
   window.open(url, "_blank");
 }
+watch(isExpanded, (v) => {
+  if (v) {
+    emit("selected", props.node);
+  } else {
+    emit("selected", null);
+  }
+});
 </script>
 
 <template>
   <div class="file-tree">
     <div
       class="file-node"
-      :class="
-        (props.node.files.length || props.node.directories.length) && 'has-sub'
-      "
+      :class="[
+        (props.node.files?.length || props.node.directories?.length) &&
+          'has-sub',
+        isExpanded && 'expand',
+      ]"
     >
       <a href="javascript:;" class="file-link" @click.prevent="handleSelect"
         ><span class="file-arrow"></span
