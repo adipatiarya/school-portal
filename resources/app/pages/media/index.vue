@@ -432,6 +432,7 @@ onMounted(() => {
                       <tr class="border-bottom">
                         <th class="w-10px ps-10px"></th>
                         <th class="px-10px">Name</th>
+                        <th class="px-10px w-200px">Path</th>
                         <th class="px-10px w-100px">Size</th>
                         <th class="px-10px w-200px">Last Modified</th>
                         <th class="px-10px w-200px">Type</th>
@@ -455,6 +456,8 @@ onMounted(() => {
                           ></i>
                         </td>
                         <td class="px-10px border-0">{{ item.name }}</td>
+                        <td class="px-10px border-0">{{ item.path }}</td>
+
                         <td class="px-10px">{{ item.size ?? 0 }} KB</td>
                         <td class="px-10px">
                           {{ moment(item.last_modified).fromNow() }}

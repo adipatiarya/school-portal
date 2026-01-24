@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { faLocation } from "@fortawesome/free-solid-svg-icons";
+
 interface Node {
   name: string;
   path: string;
   files?: Node[];
+  url?: string;
   directories?: Node[];
 }
 
@@ -13,6 +16,9 @@ const emit = defineEmits<{
 }>();
 function handleSelect() {
   emit("selected", props.node);
+}
+function reloadPage(url: string) {
+  window.open(url, "_blank");
 }
 </script>
 
@@ -39,9 +45,9 @@ function handleSelect() {
           :key="file.path"
         >
           <a
-            href="javascript:;"
+            :href="file.url"
             class="file-link"
-            @click.prevent="emit('selected', file)"
+            @click.prevent="reloadPage(file.url)"
             ><span class="file-arrow"></span
             ><span class="file-info"
               ><span class="file-icon"
