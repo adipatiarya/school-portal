@@ -69,11 +69,11 @@ const raw = ref({
       files: [
         {
           name: "test_mansasa.pdf",
-          path: "uploads/2026/01-24/test_1769240312.pdf",
+          path: "uploads/2027/test_1769240312.pdf",
           size: 0,
-          last_modified: "2026-01-24 07:38:32",
+          last_modified: "2027-01-24 07:38:32",
           mime_type: "application/pdf",
-          url: "/storage/uploads/2026/01-24/test_1769240312.pdf",
+          url: "/storage/uploads/2027/test_1769240312.pdf",
         },
       ],
       directories: [
@@ -115,6 +115,9 @@ const raw = ref({
 const selectedNode = ref<Node | null>(null);
 function onSelectedNode(node: Node) {
   selectedNode.value = node;
+}
+function removeLastSegment(path: string): string {
+  return path.split("/").slice(0, -1).join("/");
 }
 
 // gabungkan files + directories jadi satu array
@@ -456,7 +459,9 @@ onMounted(() => {
                           ></i>
                         </td>
                         <td class="px-10px border-0">{{ item.name }}</td>
-                        <td class="px-10px border-0">{{ item.path }}</td>
+                        <td class="px-10px border-0">
+                          {{ removeLastSegment(item.path) }}
+                        </td>
 
                         <td class="px-10px">{{ item.size ?? 0 }} KB</td>
                         <td class="px-10px">
