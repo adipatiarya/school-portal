@@ -1,0 +1,32 @@
+{
+
+  "name": "maxsol/file-manager",
+  "description": "Manage file",
+  "type": "library",
+  "version": "1.0.0",
+  "license": "MIT",
+  "require": {
+    "php": "^8.0"
+  },
+  "authors": [
+    {
+      "name": "Suratman",
+      "email": "suratman@maxsol.id"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Maxsol\\FileManager\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Maxsol\\FileManager\\FileManagerServiceProvider"
+      ]
+    }
+  }
+
+
+  
+}

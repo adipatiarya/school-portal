@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a81340084d25c56b9889752cdda6806",
+    "content-hash": "41ddd88ca599561bc22c8a8fd3f5e0a9",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2249,6 +2249,44 @@
                 }
             ],
             "time": "2026-01-15T06:54:53+00:00"
+        },
+        {
+            "name": "maxsol/file-manager",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "./packages/maxsol/file-manager",
+                "reference": "d4f666bb4e6118258b235bfd65dfca821e8fb3ef"
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Maxsol\\FileManager\\FileManagerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Maxsol\\FileManager\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Suratman",
+                    "email": "suratman@maxsol.id"
+                }
+            ],
+            "description": "Manage file",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "monolog/monolog",

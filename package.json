@@ -10,6 +10,7 @@
         "@fortawesome/fontawesome-svg-core": "6.5.1",
         "@fortawesome/free-solid-svg-icons": "6.5.1",
         "@fortawesome/vue-fontawesome": "3.0.6",
+        "@iconify/vue": "^5.0.0",
         "@vuepic/vue-datepicker": "^12.1.0",
         "axios": "^1.13.2",
         "bootstrap": "^5.3.8",
