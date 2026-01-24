@@ -191,36 +191,10 @@ onMounted(() => {
     >
       <div class="panel-heading">
         <h4 class="panel-title">File Manager</h4>
-        <div class="panel-heading-btn">
-          <a
-            href="javascript:;"
-            class="btn btn-xs btn-icon btn-default"
-            data-toggle="panel-expand"
-            ><i class="fa fa-expand"></i
-          ></a>
-          <a
-            href="javascript:;"
-            class="btn btn-xs btn-icon btn-success"
-            data-toggle="panel-reload"
-            ><i class="fa fa-redo"></i
-          ></a>
-          <a
-            href="javascript:;"
-            class="btn btn-xs btn-icon btn-warning"
-            data-toggle="panel-collapse"
-            ><i class="fa fa-minus"></i
-          ></a>
-          <a
-            href="javascript:;"
-            class="btn btn-xs btn-icon btn-danger"
-            data-toggle="panel-remove"
-            ><i class="fa fa-times"></i
-          ></a>
-        </div>
       </div>
       <div class="panel-body p-0 flex-1 overflow-hidden">
         <div class="file-manager h-100" id="fileManager">
-          <div class="file-manager-toolbar">
+          <div class="file-manager-toolbar d-none">
             <button type="button" class="btn shadow-none text-body border-0">
               <i class="fa fa-lg me-1 fa-plus"></i> File
             </button>
@@ -324,7 +298,7 @@ onMounted(() => {
                   data-toggle-class="file-manager-sidebar-mobile-toggled"
                   data-target="#fileManager"
                 >
-                  <i class="far fa-lg fa-folder"></i>
+                  <i class="far fa-lg fa-folder"></i> fgfgf
                 </button>
               </div>
               <div class="file-manager-sidebar-content">
@@ -393,24 +367,19 @@ onMounted(() => {
                 <button type="button" class="btn btn-sm btn-white me-2 px-2">
                   <i class="fa fa-fw fa-home"></i>
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-sm btn-white me-2"
-                  disabled
-                >
-                  <i class="fa fa-fw fa-arrow-turn-up ms-n1"></i> Up One Level
+                <button type="button" class="btn btn-sm btn-white me-2">
+                  <i class="fa fa-fw fa-plus ms-n1"></i> Folder
                 </button>
 
                 <div class="btn-group me-2">
-                  <button type="button" class="btn btn-sm btn-white" disabled>
-                    <i class="fa me-1 fa-arrow-left"></i> Back
+                  <button type="button" class="btn btn-sm btn-white">
+                    <i class="fa me-1 fa-upload"></i> Upload
                   </button>
                   <button
                     type="button"
                     class="btn btn-sm btn-white text-opacity-50"
-                    disabled
                   >
-                    <i class="fa me-1 fa-arrow-right"></i> Forward
+                    <i class="fa me-1 fa-download"></i> Download
                   </button>
                 </div>
                 <button type="button" class="btn btn-sm btn-white me-2 px-2">
