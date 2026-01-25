@@ -9,6 +9,7 @@ import { onMounted } from "vue";
 const appOption = useAppOptionStore();
 const appVariable = useAppVariableStore();
 const emitter = useEmitter();
+import { Popover } from "bootstrap";
 
 function reloadVariable() {
   var newVariables = generateVariables();
@@ -27,6 +28,14 @@ function setDarkMode(darkMode) {
 }
 
 onMounted(() => {
+  // Initialize all popovers globally
+  const popoverTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="popover"]'
+  );
+  [...popoverTriggerList].forEach((el) => {
+    new Popover(el);
+  });
+
   setDarkMode("true");
 });
 </script>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useAppOptionStore } from "@/stores/app-option";
 import { Icon } from "@iconify/vue";
 import AppLayout from "@/components/app/AppLayout.vue";
@@ -24,6 +24,7 @@ interface Node {
 // raw data
 const raw = ref<Node>({ name: "uploads", path: "/", directories: [] });
 const isLoading = ref(false);
+const isGrid = ref(false);
 
 const selectedNode = ref<Node | null>(null);
 function onSelectedNode(node: Node) {
@@ -51,7 +52,7 @@ const mixedItems = computed(() => {
 });
 
 // lifecycle
-onMounted(async () => {
+onMounted(() => {
   selectedNode.value = raw.value;
   appOption.appContentFullHeight = true;
   appOption.appContentClass = "d-flex flex-column";
@@ -80,7 +81,7 @@ onMounted(async () => {
     });
   });
 
-  await getData();
+  getData();
 });
 
 async function getData() {
@@ -103,113 +104,57 @@ function toggleSidebarClass() {
     fileManager.value.classList.toggle("file-manager-sidebar-mobile-toggled");
   }
 }
+
+const checkedAll = ref(false);
+const checkedItems = ref<string[]>([]);
+
+function toggleAll() {
+  checkedItems.value = mixedItems.value.map((item) => item.path);
+}
+function unToggleAll() {
+  checkedItems.value = [];
+}
+
+function bulkDelete() {
+  console.log("Deleting:", checkedItems.value);
+  // TODO: API call or emit event
+}
+
+function bulkDownload() {
+  console.log("Downloading:", checkedItems.value);
+  // TODO: trigger download logic
+}
+
+function bulkMove() {
+  console.log("Moving:", checkedItems.value);
+  // TODO: open modal or move dialog
+}
+
+watch(checkedItems, (newVal) => {
+  checkedAll.value = newVal.length === mixedItems.value.length;
+});
 </script>
 
 <template>
-  <AppLayout v-if="!isLoading">
+  <AppLayout>
+    <span class="ms-2"
+      ><i
+        class="fa fa-info-circle"
+        data-bs-toggle="popover"
+        data-bs-trigger="hover"
+        data-bs-title="Top products with units sold"
+        data-bs-placement="top"
+        data-bs-content="Products with the most individual units sold. Includes orders from all sales channels."
+        data-original-title=""
+        title=""
+      ></i
+    ></span>
     <div
       class="panel panel-inverse flex-1 m-0 d-flex flex-column overflow-hidden"
     >
-      <div class="panel-heading">
-        <h4 class="panel-title">File Manager</h4>
-      </div>
+      <div class="panel-heading"></div>
       <div class="panel-body p-0 flex-1 overflow-hidden">
         <div class="file-manager h-100" ref="fileManager">
-          <div class="file-manager-toolbar d-none">
-            <button type="button" class="btn shadow-none text-body border-0">
-              <i class="fa fa-lg me-1 fa-plus"></i> File
-            </button>
-            <button type="button" class="btn shadow-none text-body border-0">
-              <i class="fa fa-lg me-1 fa-plus"></i> Folder
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-copy"></i> Copy
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-move"></i> Move
-            </button>
-            <button type="button" class="btn shadow-none text-body border-0">
-              <i class="fa fa-lg me-1 fa-upload"></i> Upload
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-download"></i> Download
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-xmark"></i> Delete
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-rotate-left"></i> Restore
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-file"></i> Rename
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-pen"></i> Edit
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-pen-to-square"></i> HTML Editor
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-key"></i> Permissions
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-file"></i> View
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-lock-open"></i> Extract
-            </button>
-            <button
-              type="button"
-              class="btn shadow-none text-body text-opacity-50 border-0"
-              disabled
-            >
-              <i class="fa fa-lg me-1 fa-file-zipper"></i> Compress
-            </button>
-          </div>
           <div class="file-manager-container">
             <div class="file-manager-sidebar">
               <div class="file-manager-sidebar-mobile-toggler">
@@ -241,7 +186,7 @@ function toggleSidebarClass() {
                           <span class="file-icon"
                             ><i class="fa fa-folder fa-lg text-warning"></i
                           ></span>
-                          <span class="file-text">{{ raw.name }}</span>
+                          <span class="file-text">{{ raw.name }} </span>
                         </span>
                       </a>
                       <TreeView
@@ -291,23 +236,31 @@ function toggleSidebarClass() {
                   <button type="button" class="btn btn-sm btn-white">
                     <i class="fa me-1 fa-upload"></i> Upload
                   </button>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-white text-opacity-50"
-                  >
-                    <i class="fa me-1 fa-download"></i> Download
-                  </button>
                 </div>
-                <button type="button" class="btn btn-sm btn-white me-2 px-2">
-                  <i class="fa fa-fw fa fa-list"></i>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-white me-2 px-2"
+                  @click="isGrid = !isGrid"
+                >
+                  <i :class="isGrid ? 'bi bi-grid' : 'fa fa-fw fa fa-list'"></i>
                 </button>
 
                 <div class="btn-group me-2">
-                  <button type="button" class="btn btn-sm btn-white">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-white"
+                    @click="toggleAll"
+                  >
                     <i class="fa fa-fw fa-check ms-n1"></i> Select All
                   </button>
-                  <button type="button" class="btn btn-sm btn-white">
-                    <i class="far fa-fw fa-square ms-n1"></i> Unselect All
+
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-white"
+                    @click="unToggleAll"
+                  >
+                    <i class="far fa-fw fa-square ms-n1"></i>
+                    Unselect All
                   </button>
                 </div>
               </div>
@@ -315,10 +268,45 @@ function toggleSidebarClass() {
                 <perfect-scrollbar class="h-100 p-0">
                   <table
                     class="table table-striped table-borderless table-sm m-0 text-nowrap"
+                    v-if="!isGrid"
                   >
                     <thead>
                       <tr class="border-bottom">
-                        <th class="w-10px ps-10px"></th>
+                        <!-- Check all -->
+                        <th class="w-150px ps-10px text-center">
+                          <div class="dropdown">
+                            <span
+                              id="bulkActionDropdown"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              Action <i class="caret"></i>
+                            </span>
+                            <ul
+                              class="dropdown-menu"
+                              aria-labelledby="bulkActionDropdown"
+                            >
+                              <li>
+                                <a
+                                  class="dropdown-item"
+                                  href="#"
+                                  @click.prevent="bulkDownload"
+                                >
+                                  <i class="fa fa-trash"></i> Download
+                                </a>
+                              </li>
+                              <li>
+                                <a
+                                  class="dropdown-item"
+                                  href="#"
+                                  @click.prevent="bulkDelete"
+                                >
+                                  <i class="fa fa-trash"></i> Delete
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </th>
                         <th class="px-10px">Name</th>
                         <th class="px-10px w-200px">Path</th>
                         <th class="px-10px w-100px">Size</th>
@@ -335,21 +323,34 @@ function toggleSidebarClass() {
                         :class="item.type == 'folder' && 'cursor-pointer'"
                         @click="item.type == 'folder' && onSelectedNode(item)"
                       >
+                        <!-- Row checkbox -->
                         <td class="ps-10px border-0 text-center">
-                          <i
-                            class="fa fa-folder text-warning fa-lg"
-                            v-if="item.type == 'folder'"
-                          ></i>
-                          <i
-                            v-else
-                            class="far fa-file-text text-body text-opacity-50 fa-lg"
-                          ></i>
+                          <input
+                            type="checkbox"
+                            v-model="checkedItems"
+                            :value="item.path"
+                            class="form-check-input"
+                            @click.stop
+                          />
                         </td>
-                        <td class="px-10px border-0">{{ item.name }}</td>
+
+                        <td class="px-10px border-0">
+                          <a
+                            v-if="item.type === 'file'"
+                            :href="item.url"
+                            style="text-decoration: none"
+                            target="_blank"
+                          >
+                            <span class="text-muted">{{ item.name }}</span>
+                          </a>
+                          <span v-else>
+                            <i class="fa fa-folder fa-lg text-warning me-1"></i>
+                            {{ item.name }}
+                          </span>
+                        </td>
                         <td class="px-10px border-0">
                           {{ removeLastSegment(item.path) }}
                         </td>
-
                         <td class="px-10px">{{ item.size ?? 0 }} KB</td>
                         <td class="px-10px">
                           {{ moment(item.last_modified).fromNow() }}
@@ -365,6 +366,121 @@ function toggleSidebarClass() {
                       </tr>
                     </tbody>
                   </table>
+
+                  <panel v-else>
+                    <panel-body>
+                      <div class="dropdown">
+                        <span
+                          id="bulkActionDropdown"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          Action <i class="caret"></i>
+                        </span>
+                        <ul
+                          class="dropdown-menu"
+                          aria-labelledby="bulkActionDropdown"
+                        >
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              @click.prevent="bulkDownload"
+                            >
+                              <i class="fa fa-trash"></i> Download
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              href="#"
+                              @click.prevent="bulkDelete"
+                            >
+                              <i class="fa fa-trash"></i> Delete
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="row row-cols-2 row-cols-md-4 g-3 m-5">
+                        <div
+                          v-for="item in mixedItems"
+                          :key="item.path"
+                          v-if="selectedNode"
+                          class="col"
+                        >
+                          <div
+                            class="card h-100 text-center cursor-pointer"
+                            @click="
+                              item.type == 'folder' && onSelectedNode(item)
+                            "
+                          >
+                            <!-- Checkbox -->
+                            <div
+                              class="form-check position-absolute top-0 start-0 m-2"
+                            >
+                              <input
+                                type="checkbox"
+                                v-model="checkedItems"
+                                :value="item.path"
+                                class="form-check-input"
+                                @click.stop
+                              />
+                            </div>
+
+                            <!-- Icon -->
+                            <div class="card-body">
+                              <i
+                                v-if="item.type === 'folder'"
+                                class="fa fa-folder fa-3x text-warning mb-2"
+                              ></i>
+                              <i
+                                v-else
+                                class="far fa-file-alt fa-3x text-secondary mb-2"
+                              ></i>
+
+                              <!-- Name -->
+                              <h6 class="card-title">
+                                <a
+                                  v-if="item.type === 'file'"
+                                  :href="item.url"
+                                  target="_blank"
+                                  class="text-decoration-none text-muted"
+                                >
+                                  {{ item.name }}
+                                </a>
+                                <span v-else>{{ item.name }}</span>
+                              </h6>
+
+                              <!-- Metadata -->
+                              <div class="d-none">
+                                <p class="card-text small text-muted mb-0">
+                                  Path: {{ removeLastSegment(item.path) }}
+                                </p>
+                                <p class="card-text small text-muted mb-0">
+                                  Size: {{ item.size ?? 0 }} KB
+                                </p>
+                                <p class="card-text small text-muted mb-0">
+                                  Modified:
+                                  {{ moment(item.last_modified).fromNow() }}
+                                </p>
+                                <p class="card-text small text-muted mb-0">
+                                  Type:
+                                  {{
+                                    item.type === "file"
+                                      ? item.mime_type
+                                      : "http:/unix-directory"
+                                  }}
+                                </p>
+                                <p class="card-text small text-muted mb-0">
+                                  Permission: 0755
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </panel-body>
+                  </panel>
                 </perfect-scrollbar>
               </div>
             </div>

@@ -1,7 +1,6 @@
 <script>
 import { useAppVariableStore } from "@/stores/app-variable";
 import { animateNumber } from "@/components/app/AnimateNumber.vue";
-import { Popover } from "bootstrap";
 import apexchart from "@/components/plugins/Apexcharts.vue";
 import AppLayout from "@/components/app/AppLayout.vue";
 import jsVectorMap from "jsvectormap";
@@ -20,14 +19,6 @@ export default {
   },
   mounted() {
     animateNumber();
-
-    // popover
-    var popoverTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="popover"]')
-    );
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-      return new Popover(popoverTriggerEl);
-    });
 
     $("#daterange-filter").daterangepicker(
       {
