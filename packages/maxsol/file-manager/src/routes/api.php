@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Maxsol\FileManager\Http\Controllers\FileManagerController;
 
-Route::prefix('mx-filemanager')->group(function () {
+Route::prefix('api/mx-filemanager')->group(function () {
     Route::get('/', [FileManagerController::class, 'index']);
     Route::post('/upload', [FileManagerController::class, 'upload']);
     Route::post('/create-dir', [FileManagerController::class, 'createDir']);

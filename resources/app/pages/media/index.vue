@@ -5,6 +5,8 @@ import { Icon } from "@iconify/vue";
 import AppLayout from "@/components/app/AppLayout.vue";
 import TreeView from "@/components/app/TreeView.vue";
 import moment from "moment";
+import FileManagerService from "@/services/filemanager-service";
+
 const appOption = useAppOptionStore();
 interface Node {
   name: string;
@@ -20,98 +22,9 @@ interface Node {
   directories?: Node[];
 }
 // raw data
-const raw = ref({
-  name: "uploads",
-  path: "uploads",
-  files: [],
-  directories: [
-    {
-      name: "2026",
-      path: "uploads/2026",
-      files: [],
-      directories: [
-        {
-          name: "01-24",
-          path: "uploads/2026/01-24",
-          files: [
-            {
-              name: "test_mansasa.pdf",
-              path: "uploads/2026/01-24/test_1769240312.pdf",
-              size: 0,
-              last_modified: "2026-01-24 07:38:32",
-              mime_type: "application/pdf",
-              url: "/storage/uploads/2026/01-24/test_1769240312.pdf",
-            },
-            {
-              name: "test_1769240694.pdf",
-              path: "uploads/2026/01-24/test_1769240694.pdf",
-              size: 0,
-              last_modified: "2026-01-24 07:44:54",
-              mime_type: "application/pdf",
-              url: "/storage/uploads/2026/01-24/test_1769240694.pdf",
-            },
-            {
-              name: "test_1769240873.pdf",
-              path: "uploads/2026/01-24/test_1769240873.pdf",
-              size: 0,
-              last_modified: "2026-01-24 07:47:53",
-              mime_type: "application/pdf",
-              url: "/storage/uploads/2026/01-24/test_1769240873.pdf",
-            },
-          ],
-          directories: [],
-        },
-      ],
-    },
-    {
-      name: "2027",
-      path: "uploads/2027",
-      files: [
-        {
-          name: "test_mansasa.pdf",
-          path: "uploads/2027/test_1769240312.pdf",
-          size: 0,
-          last_modified: "2027-01-24 07:38:32",
-          mime_type: "application/pdf",
-          url: "/storage/uploads/2027/test_1769240312.pdf",
-        },
-      ],
-      directories: [
-        {
-          name: "01-24",
-          path: "uploads/2027/01-24",
-          files: [
-            {
-              name: "test_1769240312.pdf",
-              path: "uploads/2027/01-24/test_1769240312.pdf",
-              size: 0,
-              last_modified: "2027-01-24 07:38:32",
-              mime_type: "application/pdf",
-              url: "/storage/uploads/2027/01-24/test_1769240312.pdf",
-            },
-            {
-              name: "test_1769240694.pdf",
-              path: "uploads/2027/01-24/test_1769240694.pdf",
-              size: 0,
-              last_modified: "2027-01-24 07:44:54",
-              mime_type: "application/pdf",
-              url: "/storage/uploads/2027/01-24/test_1769240694.pdf",
-            },
-            {
-              name: "test_1769240873.pdf",
-              path: "uploads/2027/01-24/test_1769240873.pdf",
-              size: 0,
-              last_modified: "2027-01-24 07:47:53",
-              mime_type: "application/pdf",
-              url: "/storage/uploads/2027/01-24/test_1769240873.pdf",
-            },
-          ],
-          directories: [],
-        },
-      ],
-    },
-  ],
-});
+const raw = ref<Node>({ name: "uploads", path: "/", directories: [] });
+const isLoading = ref(false);
+
 const selectedNode = ref<Node | null>(null);
 function onSelectedNode(node: Node) {
   selectedNode.value = node;
@@ -138,7 +51,7 @@ const mixedItems = computed(() => {
 });
 
 // lifecycle
-onMounted(() => {
+onMounted(async () => {
   selectedNode.value = raw.value;
   appOption.appContentFullHeight = true;
   appOption.appContentClass = "d-flex flex-column";
@@ -166,11 +79,33 @@ onMounted(() => {
       node.classList.add("selected");
     });
   });
+
+  await getData();
 });
+
+async function getData() {
+  try {
+    isLoading.value = true;
+    const data = await FileManagerService.getAll();
+    raw.value = data;
+
+    isLoading.value = false;
+  } catch (error) {
+    alert(JSON.stringify(error));
+  }
+}
+
+const fileManager = ref<HTMLElement | null>(null);
+
+function toggleSidebarClass() {
+  if (fileManager.value) {
+    fileManager.value.classList.toggle("file-manager-sidebar-mobile-toggled");
+  }
+}
 </script>
 
 <template>
-  <AppLayout>
+  <AppLayout v-if="!isLoading">
     <div
       class="panel panel-inverse flex-1 m-0 d-flex flex-column overflow-hidden"
     >
@@ -178,7 +113,7 @@ onMounted(() => {
         <h4 class="panel-title">File Manager</h4>
       </div>
       <div class="panel-body p-0 flex-1 overflow-hidden">
-        <div class="file-manager h-100" id="fileManager">
+        <div class="file-manager h-100" ref="fileManager">
           <div class="file-manager-toolbar d-none">
             <button type="button" class="btn shadow-none text-body border-0">
               <i class="fa fa-lg me-1 fa-plus"></i> File
@@ -277,13 +212,8 @@ onMounted(() => {
           <div class="file-manager-container">
             <div class="file-manager-sidebar">
               <div class="file-manager-sidebar-mobile-toggler">
-                <button
-                  type="button"
-                  class="btn"
-                  data-toggle-class="file-manager-sidebar-mobile-toggled"
-                  data-target="#fileManager"
-                >
-                  <i class="far fa-lg fa-folder"></i> fgfgf
+                <button type="button" class="btn" @click="toggleSidebarClass">
+                  <i class="far fa-lg fa-folder"></i>
                 </button>
               </div>
               <div class="file-manager-sidebar-content">
@@ -310,7 +240,7 @@ onMounted(() => {
                           <span class="file-icon"
                             ><i class="fa fa-folder fa-lg text-warning"></i
                           ></span>
-                          <span class="file-text">uploads</span>
+                          <span class="file-text">{{ raw.name }}</span>
                         </span>
                       </a>
                       <TreeView

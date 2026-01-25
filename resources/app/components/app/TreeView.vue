@@ -18,29 +18,24 @@ const emit = defineEmits<{
   (e: "selected", node: Node): void;
 }>();
 function handleSelect() {
+  // emit("selected", props.node);
+  isExpanded.value = !isExpanded.value;
   emit("selected", props.node);
-  // isExpanded.value = !isExpanded.value;
 }
 function reloadPage(url: string) {
   window.open(url, "_blank");
 }
-watch(isExpanded, (v) => {
-  if (v) {
-    emit("selected", props.node);
-  } else {
-    emit("selected", null);
-  }
-});
 </script>
 
 <template>
   <div class="file-tree">
     <div
       class="file-node"
-      :class="
+      :class="[
         (props.node.files?.length || props.node.directories?.length) &&
-        'has-sub'
-      "
+          'has-sub',
+        isExpanded && 'expand',
+      ]"
     >
       <a href="javascript:;" class="file-link" @click.prevent="handleSelect"
         ><span class="file-arrow"></span
