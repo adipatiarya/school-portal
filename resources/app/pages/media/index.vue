@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, watch, h } from "vue";
 import { useAppOptionStore } from "@/stores/app-option";
 import { Icon } from "@iconify/vue";
 import AppLayout from "@/components/app/AppLayout.vue";
 import TreeView from "@/components/app/TreeView.vue";
 import moment from "moment";
 import FileManagerService from "@/services/filemanager-service";
+import { usePopoverInit } from "@/composables/UseProverInit";
 
 const appOption = useAppOptionStore();
 interface Node {
@@ -50,6 +51,8 @@ const mixedItems = computed(() => {
 
   return [...files, ...dirs];
 });
+
+usePopoverInit([mixedItems]);
 
 // lifecycle
 onMounted(() => {
@@ -133,22 +136,30 @@ function bulkMove() {
 watch(checkedItems, (newVal) => {
   checkedAll.value = newVal.length === mixedItems.value.length;
 });
+const popoverContent = (item: Node) =>
+  `<ul>
+      <li class="small text-muted">
+        Path: ${removeLastSegment(item.path)}
+      </li>
+      <li class="small text-muted mb-0">
+        Size:   ${item.size ?? 0}KB
+      </li>
+      <li class="small text-muted mb-0">
+        Modified: ${moment(item.last_modified).fromNow()}
+       
+      </li>
+      <li class="small text-muted mb-0">
+        Mime Type: ${item.mime_type}
+       
+      </li>
+      <li class="small text-muted mb-0">
+        Author: Jaka Swara
+      </li>
+  </ul>`;
 </script>
 
 <template>
   <AppLayout>
-    <span class="ms-2"
-      ><i
-        class="fa fa-info-circle"
-        data-bs-toggle="popover"
-        data-bs-trigger="hover"
-        data-bs-title="Top products with units sold"
-        data-bs-placement="top"
-        data-bs-content="Products with the most individual units sold. Includes orders from all sales channels."
-        data-original-title=""
-        title=""
-      ></i
-    ></span>
     <div
       class="panel panel-inverse flex-1 m-0 d-flex flex-column overflow-hidden"
     >
@@ -268,7 +279,7 @@ watch(checkedItems, (newVal) => {
                 <perfect-scrollbar class="h-100 p-0">
                   <table
                     class="table table-striped table-borderless table-sm m-0 text-nowrap"
-                    v-if="!isGrid"
+                    :class="!isGrid ? 'd-block' : 'd-none'"
                   >
                     <thead>
                       <tr class="border-bottom">
@@ -367,7 +378,7 @@ watch(checkedItems, (newVal) => {
                     </tbody>
                   </table>
 
-                  <panel v-else>
+                  <panel :class="isGrid ? 'd-block' : 'd-none'">
                     <panel-body>
                       <div class="dropdown">
                         <span
@@ -436,6 +447,13 @@ watch(checkedItems, (newVal) => {
                               <i
                                 v-else
                                 class="far fa-file-alt fa-3x text-secondary mb-2"
+                                data-bs-toggle="popover"
+                                data-bs-trigger="hover"
+                                :data-bs-title="item.name"
+                                data-bs-placement="top"
+                                :data-bs-content="popoverContent(item)"
+                                data-original-title=""
+                                title=""
                               ></i>
 
                               <!-- Name -->
