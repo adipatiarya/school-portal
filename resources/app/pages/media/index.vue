@@ -171,21 +171,6 @@ onMounted(() => {
 
 <template>
   <AppLayout>
-    <div>
-      <!-- BEGIN breadcrumb -->
-      <ol class="breadcrumb float-xl-end">
-        <li class="breadcrumb-item"><a href="javascript:;">Home</a></li>
-        <li class="breadcrumb-item"><a href="javascript:;">Extra</a></li>
-        <li class="breadcrumb-item active">File Manager</li>
-      </ol>
-      <!-- END breadcrumb -->
-      <!-- BEGIN page-header -->
-      <h1 class="page-header">
-        File Manager <small>header small text goes here...</small>
-      </h1>
-      <!-- END page-header -->
-    </div>
-
     <div
       class="panel panel-inverse flex-1 m-0 d-flex flex-column overflow-hidden"
     >
