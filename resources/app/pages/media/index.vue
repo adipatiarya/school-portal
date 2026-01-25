@@ -88,6 +88,7 @@ async function getData() {
     isLoading.value = true;
     const data = await FileManagerService.getAll();
     raw.value = data;
+    selectedNode.value = raw.value;
 
     isLoading.value = false;
   } catch (error) {
@@ -298,7 +299,7 @@ function toggleSidebarClass() {
                   </button>
                 </div>
                 <button type="button" class="btn btn-sm btn-white me-2 px-2">
-                  <i class="fa fa-fw fa-arrows-rotate"></i>
+                  <i class="fa fa-fw fa fa-list"></i>
                 </button>
 
                 <div class="btn-group me-2">
@@ -331,6 +332,8 @@ function toggleSidebarClass() {
                         v-for="item in mixedItems"
                         :key="item.path"
                         v-if="selectedNode"
+                        :class="item.type == 'folder' && 'cursor-pointer'"
+                        @click="item.type == 'folder' && onSelectedNode(item)"
                       >
                         <td class="ps-10px border-0 text-center">
                           <i
