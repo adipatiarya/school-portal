@@ -29,11 +29,18 @@ const folderInput = ref(null);
 const raw = ref<Node>({ name: "uploads", path: "/", directories: [] });
 const isLoading = ref(false);
 const isGrid = ref(false);
+const errorRef = ref("");
 
 const selectedNode = ref<Node | null>(null);
+
+const checkedAll = ref(false);
+const checkedItems = ref<string[]>([]);
+const onEdit = ref<any>("");
+
 function onSelectedNode(node: Node) {
   selectedNode.value = node;
   newFolder.value = null;
+  errorRef.value = "";
 }
 function removeLastSegment(path: string): string {
   return path.split("/").slice(0, -1).join("/");
@@ -97,6 +104,12 @@ function addNewFolder() {
     folderInput.value?.focus();
   });
 }
+function handdleEdit(v: string) {
+  onEdit.value = v;
+  nextTick(() => {
+    folderInput.value?.focus();
+  });
+}
 
 function clearData() {
   newFolder.value = null;
@@ -116,7 +129,12 @@ async function newFolderSubmit() {
     clearData();
     await getData();
   } catch (error) {
-    alert(JSON.stringify(error));
+    console.log(error);
+    errorRef.value = "Folder name already";
+
+    nextTick(() => {
+      folderInput.value?.focus();
+    });
   }
 }
 
@@ -140,9 +158,6 @@ function toggleSidebarClass() {
     fileManager.value.classList.toggle("file-manager-sidebar-mobile-toggled");
   }
 }
-
-const checkedAll = ref(false);
-const checkedItems = ref<string[]>([]);
 
 function toggleAll() {
   checkedItems.value = mixedItems.value.map((item) => item.path);
@@ -473,12 +488,7 @@ const popoverContent = (item: Node) =>
                           v-if="selectedNode"
                           class="col"
                         >
-                          <div
-                            class="card h-100 text-center cursor-pointer"
-                            @click="
-                              item.type == 'folder' && onSelectedNode(item)
-                            "
-                          >
+                          <div class="card h-100 text-center">
                             <!-- Checkbox -->
                             <div
                               class="form-check position-absolute top-0 start-0 m-2"
@@ -496,7 +506,10 @@ const popoverContent = (item: Node) =>
                             <div class="card-body">
                               <i
                                 v-if="item.type === 'folder'"
-                                class="fa fa-folder fa-3x text-warning mb-2"
+                                class="fa fa-folder fa-3x text-warning mb-2 cursor-pointer"
+                                @click="
+                                  item.type == 'folder' && onSelectedNode(item)
+                                "
                               ></i>
                               <i
                                 v-else
@@ -520,7 +533,32 @@ const popoverContent = (item: Node) =>
                                 >
                                   {{ item.name }}
                                 </a>
-                                <span v-else>{{ item.name }}</span>
+                                <template v-else>
+                                  <form
+                                    v-if="item.path == onEdit && !newFolder"
+                                    class="d-flex"
+                                    @submit.prevent="null"
+                                  >
+                                    <input
+                                      type="text"
+                                      v-model="item.name"
+                                      class="form-control mx-2"
+                                      ref="folderInput"
+                                      required
+                                    />
+
+                                    <button
+                                      class="btn btn-sm btn-default"
+                                      type="submit"
+                                    >
+                                      Save
+                                    </button>
+                                  </form>
+
+                                  <span @click="handdleEdit(item.path)" v-else>
+                                    {{ item.name }}
+                                  </span>
+                                </template>
                               </h6>
                             </div>
                           </div>
@@ -551,6 +589,7 @@ const popoverContent = (item: Node) =>
                                     ref="folderInput"
                                     required
                                   />
+
                                   <button
                                     class="btn btn-sm btn-default"
                                     type="submit"
@@ -559,6 +598,9 @@ const popoverContent = (item: Node) =>
                                   </button>
                                 </form>
                               </h6>
+                              <span v-if="errorRef" class="mt-1">{{
+                                errorRef
+                              }}</span>
                             </div>
                           </div>
                         </div>
