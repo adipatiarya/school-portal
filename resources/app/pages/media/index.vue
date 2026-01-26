@@ -98,6 +98,24 @@ function addNewFolder() {
   });
 }
 
+async function newFolderSubmit() {
+  try {
+    await FileManagerService.createDir(
+      newFolder.value.path,
+      newFolder.value.name
+    );
+
+    selectedNode.value.directories = [
+      ...selectedNode.value.directories,
+      newFolder.value,
+    ];
+    newFolder.value = null;
+    //await getData();
+  } catch (error) {
+    alert(JSON.stringify(error));
+  }
+}
+
 async function getData() {
   try {
     isLoading.value = true;
@@ -503,11 +521,13 @@ const popoverContent = (item: Node) =>
 
                               <!-- Name -->
                               <h6 class="card-title">
-                                {{ newFolder }}
-                                <form class="d-flex">
+                                <form
+                                  class="d-flex"
+                                  @submit.prevent="newFolderSubmit"
+                                >
                                   <input
                                     type="text"
-                                    :value="newFolder.name"
+                                    v-model="newFolder.name"
                                     class="form-control mx-2"
                                     ref="folderInput"
                                     required

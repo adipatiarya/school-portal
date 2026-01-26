@@ -76,5 +76,35 @@ public function index()
     }
 
 
+    public function createDir(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'parent' => 'nullable|string' // optional parent folder
+        ]);
+
+        $parent = $request->input('parent', 'uploads'); // default root
+        $folderName = $request->input('name');
+
+        $newPath = $parent . '/' . $folderName;
+
+        if (Storage::disk('public')->exists($newPath)) {
+            return response()->json([
+                'message' => 'Folder already exists',
+                'path'    => $newPath
+            ], 400);
+        }
+
+        Storage::disk('public')->makeDirectory($newPath);
+
+        return response()->json([
+            'message' => 'Folder created successfully',
+            'path'    => $newPath
+        ]);
+    }
+
+
+
+
 
 }
