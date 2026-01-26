@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, h } from "vue";
+import { ref, onMounted, computed, watch, h, nextTick } from "vue";
 import { useAppOptionStore } from "@/stores/app-option";
 import { Icon } from "@iconify/vue";
 import AppLayout from "@/components/app/AppLayout.vue";
@@ -22,6 +22,9 @@ interface Node {
   files?: Node[];
   directories?: Node[];
 }
+const newFolder = ref<Node | null>(null);
+const folderInput = ref(null);
+
 // raw data
 const raw = ref<Node>({ name: "uploads", path: "/", directories: [] });
 const isLoading = ref(false);
@@ -30,6 +33,7 @@ const isGrid = ref(false);
 const selectedNode = ref<Node | null>(null);
 function onSelectedNode(node: Node) {
   selectedNode.value = node;
+  newFolder.value = null;
 }
 function removeLastSegment(path: string): string {
   return path.split("/").slice(0, -1).join("/");
@@ -87,6 +91,13 @@ onMounted(() => {
   getData();
 });
 
+function addNewFolder() {
+  newFolder.value = { name: "New Folder", path: selectedNode.value.path };
+  nextTick(() => {
+    folderInput.value?.focus();
+  });
+}
+
 async function getData() {
   try {
     isLoading.value = true;
@@ -136,6 +147,7 @@ function bulkMove() {
 watch(checkedItems, (newVal) => {
   checkedAll.value = newVal.length === mixedItems.value.length;
 });
+
 const popoverContent = (item: Node) =>
   `<ul>
       <li class="small text-muted">
@@ -189,6 +201,7 @@ const popoverContent = (item: Node) =>
                         @click.prevent="
                           () => {
                             selectedNode = raw;
+                            newFolder = null;
                           }
                         "
                       >
@@ -239,7 +252,11 @@ const popoverContent = (item: Node) =>
                 <button type="button" class="btn btn-sm btn-white me-2 px-2">
                   <i class="fa fa-fw fa-home"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-white me-2">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-white me-2"
+                  @click="addNewFolder"
+                >
                   <i class="fa fa-fw fa-plus ms-n1"></i> Folder
                 </button>
 
@@ -468,31 +485,41 @@ const popoverContent = (item: Node) =>
                                 </a>
                                 <span v-else>{{ item.name }}</span>
                               </h6>
+                            </div>
+                          </div>
+                        </div>
+                        <div v-if="newFolder" class="col">
+                          <div class="card h-100 text-center cursor-pointer">
+                            <!-- Checkbox -->
+                            <div
+                              class="form-check position-absolute top-0 start-0 m-2"
+                            ></div>
 
-                              <!-- Metadata -->
-                              <div class="d-none">
-                                <p class="card-text small text-muted mb-0">
-                                  Path: {{ removeLastSegment(item.path) }}
-                                </p>
-                                <p class="card-text small text-muted mb-0">
-                                  Size: {{ item.size ?? 0 }} KB
-                                </p>
-                                <p class="card-text small text-muted mb-0">
-                                  Modified:
-                                  {{ moment(item.last_modified).fromNow() }}
-                                </p>
-                                <p class="card-text small text-muted mb-0">
-                                  Type:
-                                  {{
-                                    item.type === "file"
-                                      ? item.mime_type
-                                      : "http:/unix-directory"
-                                  }}
-                                </p>
-                                <p class="card-text small text-muted mb-0">
-                                  Permission: 0755
-                                </p>
-                              </div>
+                            <!-- Icon -->
+                            <div class="card-body">
+                              <i
+                                class="fa fa-folder fa-3x text-warning mb-2"
+                              ></i>
+
+                              <!-- Name -->
+                              <h6 class="card-title">
+                                {{ newFolder }}
+                                <form class="d-flex">
+                                  <input
+                                    type="text"
+                                    :value="newFolder.name"
+                                    class="form-control mx-2"
+                                    ref="folderInput"
+                                    required
+                                  />
+                                  <button
+                                    class="btn btn-sm btn-default"
+                                    type="submit"
+                                  >
+                                    Save
+                                  </button>
+                                </form>
+                              </h6>
                             </div>
                           </div>
                         </div>
