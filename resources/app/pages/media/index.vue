@@ -98,6 +98,10 @@ function addNewFolder() {
   });
 }
 
+function clearData() {
+  newFolder.value = null;
+  selectedNode.value = null;
+}
 async function newFolderSubmit() {
   try {
     await FileManagerService.createDir(
@@ -109,8 +113,8 @@ async function newFolderSubmit() {
       ...selectedNode.value.directories,
       newFolder.value,
     ];
-    newFolder.value = null;
-    //await getData();
+    clearData();
+    await getData();
   } catch (error) {
     alert(JSON.stringify(error));
   }
@@ -147,9 +151,24 @@ function unToggleAll() {
   checkedItems.value = [];
 }
 
-function bulkDelete() {
+async function bulkDelete() {
   console.log("Deleting:", checkedItems.value);
-  // TODO: API call or emit event
+
+  try {
+    // map each checked item into a delete request
+    const promises = checkedItems.value.map((item) =>
+      FileManagerService.deleteDir(item)
+    );
+
+    // wait until all requests finish
+    await Promise.all(promises);
+    clearData();
+    await getData();
+
+    // optionally emit event or refresh UI
+  } catch (error) {
+    console.error("Error deleting:", error);
+  }
 }
 
 function bulkDownload() {

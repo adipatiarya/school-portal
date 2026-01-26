@@ -103,8 +103,28 @@ public function index()
         ]);
     }
 
+   // ➖ Delete folder
+public function deleteDir(Request $request)
+{
+    $request->validate([
+        'path' => 'required|string'
+    ]);
 
+    $path = $request->input('path');
 
+    if (!Storage::disk('public')->exists($path)) {
+        return response()->json([
+            'message' => 'Folder not found',
+            'path'    => $path
+        ], 404);
+    }
 
+    Storage::disk('public')->deleteDirectory($path);
+
+    return response()->json([
+        'message' => 'Folder deleted successfully',
+        'path'    => $path
+    ]);
+}
 
 }

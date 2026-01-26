@@ -8,8 +8,8 @@ Route::prefix('api/mx-filemanager')->group(function () {
     Route::post('/upload', [FileManagerController::class, 'upload']);
     Route::post('/create-dir', [FileManagerController::class, 'createDir']);
     Route::post('/move', [FileManagerController::class, 'move']);
-    Route::delete('/file/{filename}', [FileManagerController::class, 'deleteFile']);
-    Route::delete('/dir/{dirname}', [FileManagerController::class, 'deleteDir']);
+    Route::delete('/delete-file/{filename}', [FileManagerController::class, 'deleteFile']);
+    Route::post('/delete-dir', [FileManagerController::class, 'deleteDir']);
 });
 
 

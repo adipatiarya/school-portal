@@ -19,8 +19,11 @@ class FileManagerService {
     const { data } = await api.get("api/mx-filemanager");
     return data;
   }
-  static async createDir(parent: string, name: string): Promise<void> {
-    await api.post("api/mx-filemanager/create-dir", { parent, name });
+  static async createDir(path: string, name: string): Promise<void> {
+    await api.post("api/mx-filemanager/create-dir", { parent: path, name });
+  }
+  static async deleteDir(path: string): Promise<void> {
+    await api.post("api/mx-filemanager/delete-dir", { path: path });
   }
 }
 
