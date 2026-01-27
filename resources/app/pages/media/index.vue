@@ -18,6 +18,7 @@ interface Node {
   last_modified?: string;
   mime_type?: string;
   url?: string;
+  is_new?: boolean;
 
   // untuk folder
   files?: Node[];
@@ -102,8 +103,15 @@ onMounted(() => {
 
 function addNewFolder() {
   newFolder.value = { name: "New Folder", path: selectedNode.value.path };
+  selectedNode.value.directories.push({
+    ...newFolder.value,
+    is_new: true,
+  });
+
   nextTick(() => {
-    folderInput.value?.focus();
+    // focus the last input
+    const lastIndex = folderInput.value.length - 1;
+    folderInput.value[lastIndex]?.focus();
   });
 }
 function handdleEdit(v: string) {
@@ -117,27 +125,20 @@ function clearData() {
   newFolder.value = null;
   selectedNode.value = null;
 }
-async function newFolderSubmit() {
+async function newFolderSubmit(name: string, path: string) {
   try {
-    await FileManagerService.createDir(
-      newFolder.value.path,
-      newFolder.value.name
-    );
+    await FileManagerService.createDir(path, name);
     await getData2();
 
-    selectedNode.value.directories.push({
-      name: newFolder.value.name,
-      path: newFolder.value.path + "/" + newFolder.value.name,
-    });
-    newFolder.value = null;
-  } catch (error) {
-    console.log(error);
-    errorRef.value = "Folder name already";
-
-    nextTick(() => {
-      folderInput.value?.focus();
-    });
-  }
+    const index = selectedNode.value.directories.findIndex(
+      (p) => p.path == path
+    );
+    selectedNode.value.directories[index].is_new = false;
+    selectedNode.value.directories[index].name = name;
+    selectedNode.value.directories[index].path = path;
+    selectedNode.value.directories[index].directories = [];
+    checkedItems.value = [];
+  } catch (error) {}
 }
 
 async function getData() {
@@ -194,6 +195,7 @@ async function bulkDelete() {
     selectedNode.value.directories = selectedNode.value.directories.filter(
       (dir) => !checkedItems.value.includes(dir.path)
     );
+    checkedItems.value = [];
 
     // optionally emit event or refresh UI
   } catch (error) {
@@ -345,6 +347,7 @@ const popoverContent = (item: Node) =>
                 <button
                   type="button"
                   class="btn btn-sm btn-white me-2"
+                  :disabled="newFolder !== null"
                   @click="addNewFolder"
                 >
                   <i class="fa fa-fw fa-plus ms-n1"></i> Folder
@@ -483,40 +486,12 @@ const popoverContent = (item: Node) =>
                         </td>
                         <td class="px-10px border-0">0755</td>
                       </tr>
-                      <tr v-if="newFolder" class="col">
-                        <td></td>
-                        <td>
-                          <form
-                            class="d-flex"
-                            @submit.prevent="newFolderSubmit"
-                          >
-                            <input
-                              type="text"
-                              v-model="newFolder.name"
-                              class="form-control mx-2"
-                              ref="folderInput"
-                              required
-                            />
-
-                            <button
-                              class="btn btn-sm btn-default"
-                              type="submit"
-                            >
-                              Save
-                            </button>
-                          </form>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                      </tr>
                     </tbody>
                   </table>
 
                   <panel :class="isGrid ? 'd-block' : 'd-none'">
                     <panel-body>
+                      {{ selectedNode }}
                       <div class="dropdown">
                         <span
                           id="bulkActionDropdown"
@@ -560,6 +535,7 @@ const popoverContent = (item: Node) =>
                             <!-- Checkbox -->
                             <div
                               class="form-check position-absolute top-0 start-0 m-2"
+                              v-if="!item.is_new"
                             >
                               <input
                                 type="checkbox"
@@ -571,17 +547,53 @@ const popoverContent = (item: Node) =>
                             </div>
 
                             <!-- Icon -->
-                            <div class="card-body">
+                            <div
+                              class="card-body"
+                              v-if="item.type === 'folder'"
+                            >
+                              <template v-if="item.is_new">
+                                <i
+                                  class="fa fa-folder fa-3x text-warning mb-2"
+                                ></i>
+
+                                <!-- Name -->
+                                <h6 class="card-title">
+                                  <div class="d-flex">
+                                    <input
+                                      type="text"
+                                      v-model="item.name"
+                                      class="form-control mx-2"
+                                      ref="folderInput"
+                                    />
+
+                                    <button
+                                      class="btn btn-sm btn-default"
+                                      type="button"
+                                      :disabled="item.name == '' || !item.name"
+                                      @click="
+                                        () =>
+                                          newFolderSubmit(item.name, item.path)
+                                      "
+                                    >
+                                      Save
+                                    </button>
+                                  </div>
+                                </h6>
+                                <span v-if="errorRef" class="mt-1">{{
+                                  errorRef
+                                }}</span>
+                              </template>
+                              <template v-else>
+                                <i
+                                  class="fa fa-folder fa-3x text-warning mb-2 cursor-pointer"
+                                  @click="onSelectedNode(item)"
+                                />
+
+                                <h6 class="card-title">{{ item.name }}</h6>
+                              </template>
+                            </div>
+                            <div class="card-body" v-if="item.type == 'file'">
                               <i
-                                v-if="item.type === 'folder'"
-                                class="fa fa-folder fa-3x text-warning mb-2 cursor-pointer"
-                                ref="clickNode"
-                                @click="
-                                  item.type == 'folder' && onSelectedNode(item)
-                                "
-                              ></i>
-                              <i
-                                v-else
                                 class="far fa-file-alt fa-3x text-secondary mb-2"
                                 data-bs-toggle="popover"
                                 data-bs-trigger="hover"
@@ -591,85 +603,13 @@ const popoverContent = (item: Node) =>
                                 data-original-title=""
                                 title=""
                               ></i>
-
-                              <!-- Name -->
-                              <h6 class="card-title">
-                                <a
-                                  v-if="item.type === 'file'"
-                                  :href="item.url"
-                                  target="_blank"
-                                  class="text-decoration-none text-muted"
-                                >
-                                  {{ item.name }}
-                                </a>
-                                <template v-else>
-                                  <form
-                                    v-if="item.path == onEdit && !newFolder"
-                                    class="d-flex"
-                                    @submit.prevent="null"
-                                  >
-                                    <input
-                                      type="text"
-                                      v-model="item.name"
-                                      class="form-control mx-2"
-                                      ref="folderInput"
-                                      required
-                                    />
-
-                                    <button
-                                      class="btn btn-sm btn-default"
-                                      type="submit"
-                                    >
-                                      Save
-                                    </button>
-                                  </form>
-
-                                  <span @click="handdleEdit(item.path)" v-else>
-                                    {{ item.name }}
-                                  </span>
-                                </template>
-                              </h6>
-                            </div>
-                          </div>
-                        </div>
-                        <div v-if="newFolder" class="col">
-                          <div class="card h-100 text-center cursor-pointer">
-                            <!-- Checkbox -->
-                            <div
-                              class="form-check position-absolute top-0 start-0 m-2"
-                            ></div>
-
-                            <!-- Icon -->
-                            <div class="card-body">
-                              <i
-                                class="fa fa-folder fa-3x text-warning mb-2"
-                              ></i>
-
-                              <!-- Name -->
-                              <h6 class="card-title">
-                                <form
-                                  class="d-flex"
-                                  @submit.prevent="newFolderSubmit"
-                                >
-                                  <input
-                                    type="text"
-                                    v-model="newFolder.name"
-                                    class="form-control mx-2"
-                                    ref="folderInput"
-                                    required
-                                  />
-
-                                  <button
-                                    class="btn btn-sm btn-default"
-                                    type="submit"
-                                  >
-                                    Save
-                                  </button>
-                                </form>
-                              </h6>
-                              <span v-if="errorRef" class="mt-1">{{
-                                errorRef
-                              }}</span>
+                              <a
+                                :href="item.url"
+                                target="_blank"
+                                class="text-decoration-none text-muted"
+                              >
+                                {{ item.name }}
+                              </a>
                             </div>
                           </div>
                         </div>
