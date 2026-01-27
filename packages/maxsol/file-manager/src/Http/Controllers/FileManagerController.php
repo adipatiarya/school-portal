@@ -48,8 +48,11 @@ public function index()
     public function upload(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|max:2048'
+            'file' => 'required|file|max:2048',
+            'path' => 'required|string'
         ]);
+
+      
 
         $file = $request->file('file');
 
@@ -59,6 +62,11 @@ public function index()
 
         // Buat folder default: uploads/tahun/tanggal
         $folder = 'uploads/' . date('Y') . '/' . date('m-d');
+
+        if($request->input('path')) {
+            
+            $folder = $request->input('path');
+        }
 
         // Buat nama file baru
         $filename = $originalName . '_' . time() . '.' . $extension;

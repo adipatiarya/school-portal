@@ -7,6 +7,7 @@ import TreeView from "@/components/app/TreeView.vue";
 import moment from "moment";
 import FileManagerService from "@/services/filemanager-service";
 import { usePopoverInit } from "@/composables/UseProverInit";
+import Upload from "./upload.vue";
 
 const appOption = useAppOptionStore();
 interface Node {
@@ -24,11 +25,12 @@ interface Node {
 }
 const newFolder = ref<Node | null>(null);
 const folderInput = ref(null);
+const clickNode = ref(null);
 
 // raw data
 const raw = ref<Node>({ name: "uploads", path: "/", directories: [] });
 const isLoading = ref(false);
-const isGrid = ref(false);
+const isGrid = ref(true);
 const errorRef = ref("");
 
 const selectedNode = ref<Node | null>(null);
@@ -121,13 +123,13 @@ async function newFolderSubmit() {
       newFolder.value.path,
       newFolder.value.name
     );
+    await getData2();
 
-    selectedNode.value.directories = [
-      ...selectedNode.value.directories,
-      newFolder.value,
-    ];
-    clearData();
-    await getData();
+    selectedNode.value.directories.push({
+      name: newFolder.value.name,
+      path: newFolder.value.path + "/" + newFolder.value.name,
+    });
+    newFolder.value = null;
   } catch (error) {
     console.log(error);
     errorRef.value = "Folder name already";
@@ -144,6 +146,17 @@ async function getData() {
     const data = await FileManagerService.getAll();
     raw.value = data;
     selectedNode.value = raw.value;
+
+    isLoading.value = false;
+  } catch (error) {
+    alert(JSON.stringify(error));
+  }
+}
+async function getData2() {
+  try {
+    isLoading.value = true;
+    const data = await FileManagerService.getAll();
+    raw.value = data;
 
     isLoading.value = false;
   } catch (error) {
@@ -177,8 +190,10 @@ async function bulkDelete() {
 
     // wait until all requests finish
     await Promise.all(promises);
-    clearData();
-    await getData();
+
+    selectedNode.value.directories = selectedNode.value.directories.filter(
+      (dir) => !checkedItems.value.includes(dir.path)
+    );
 
     // optionally emit event or refresh UI
   } catch (error) {
@@ -271,6 +286,29 @@ const popoverContent = (item: Node) =>
                         :node="dir"
                         @selected="onSelectedNode"
                       />
+
+                      <div
+                        class="file-node"
+                        v-for="file in raw.files"
+                        :key="file.path"
+                      >
+                        <a
+                          :href="file.url"
+                          class="file-link"
+                          v-for="file in raw.files"
+                          :key="file.path"
+                          ><span class="file-arrow"></span
+                          ><span class="file-info"
+                            ><span class="file-icon"
+                              ><i
+                                class="fa fa-file-text fa-lg text-body text-opacity-50"
+                              ></i></span
+                            ><span class="file-text">{{
+                              file.name
+                            }}</span></span
+                          ></a
+                        >
+                      </div>
                     </div>
                   </div>
                 </perfect-scrollbar>
@@ -313,14 +351,15 @@ const popoverContent = (item: Node) =>
                 </button>
 
                 <div class="btn-group me-2">
-                  <button type="button" class="btn btn-sm btn-white">
-                    <i class="fa me-1 fa-upload"></i> Upload
-                  </button>
+                  <Upload
+                    :path="selectedNode?.path ? selectedNode.path : raw.name"
+                  />
                 </div>
                 <button
                   type="button"
                   class="btn btn-sm btn-white me-2 px-2"
                   @click="isGrid = !isGrid"
+                  disabled
                 >
                   <i :class="isGrid ? 'bi bi-grid' : 'fa fa-fw fa fa-list'"></i>
                 </button>
@@ -444,6 +483,35 @@ const popoverContent = (item: Node) =>
                         </td>
                         <td class="px-10px border-0">0755</td>
                       </tr>
+                      <tr v-if="newFolder" class="col">
+                        <td></td>
+                        <td>
+                          <form
+                            class="d-flex"
+                            @submit.prevent="newFolderSubmit"
+                          >
+                            <input
+                              type="text"
+                              v-model="newFolder.name"
+                              class="form-control mx-2"
+                              ref="folderInput"
+                              required
+                            />
+
+                            <button
+                              class="btn btn-sm btn-default"
+                              type="submit"
+                            >
+                              Save
+                            </button>
+                          </form>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
                     </tbody>
                   </table>
 
@@ -507,6 +575,7 @@ const popoverContent = (item: Node) =>
                               <i
                                 v-if="item.type === 'folder'"
                                 class="fa fa-folder fa-3x text-warning mb-2 cursor-pointer"
+                                ref="clickNode"
                                 @click="
                                   item.type == 'folder' && onSelectedNode(item)
                                 "
